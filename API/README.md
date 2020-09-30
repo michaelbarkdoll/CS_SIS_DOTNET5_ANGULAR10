@@ -29,4 +29,11 @@ Extension
 sqlite v0.9.0 by alexcvzz
 
 
+dotnet ef migrations add UserPasswordAdded
+dotnet ef database update
+
+nuget gallery:
+system.identitymodel.tokens.jwt v6.7.1
+microsoft.aspnetcore.authentication.jwtbearer by Microsoft v3.1.8
+
 
