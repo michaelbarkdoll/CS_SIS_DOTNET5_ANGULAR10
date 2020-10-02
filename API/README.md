@@ -37,3 +37,11 @@ system.identitymodel.tokens.jwt v6.7.1
 microsoft.aspnetcore.authentication.jwtbearer by Microsoft v3.1.8
 
 
+# Trust ssl
+dotnet dev-certs https -ep ./certificate.crt --trust --format Pem
+
+cp certificate.pem /etc/pki/ca-trust/source/anchors/
+sudo update-ca-trust
+
+Trust it in your browser on linux by visiting:
+https://localhost:5001/api/users

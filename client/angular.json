@@ -65,7 +65,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "sslCert": "./ssl/certificate.pem",
-            "sslKey": "./ssl/privatekey.pem",
+            "sslKey": "./ssl/privkey.pem",
             "ssl": true,
             "browserTarget": "client:build"
           },

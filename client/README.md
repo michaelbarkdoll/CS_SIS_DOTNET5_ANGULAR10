@@ -25,3 +25,53 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+```
+ng generate -h
+```
+
+# New component
+```
+cd client/src/app
+ng generate component nav --skip-tests
+```
+
+```
+CREATE src/app/nav/nav.component.css (0 bytes)
+CREATE src/app/nav/nav.component.html (18 bytes)
+CREATE src/app/nav/nav.component.ts (263 bytes)
+UPDATE src/app/app.modu
+```
+
+# New Service
+```
+cd client/src/app
+mkdir _services
+cd _services
+```
+
+```
+ng generate service account --skip-tests
+```
+
+```
+CREATE src/app/_services/account.service.ts (136 bytes)
+```
+
+```
+cd client/src/app
+ng generate component home --skip-tests
+```
+
+```
+CREATE src/app/home/home.component.css (0 bytes)
+CREATE src/app/home/home.component.html (19 bytes)
+CREATE src/app/home/home.component.ts (267 bytes)
+UPDATE src/app/app.module.ts (879 bytes)
+```
+
+```
+cd client/src/app
+ng generate component register --skip-tests
+```
