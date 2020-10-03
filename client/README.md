@@ -75,3 +75,71 @@ UPDATE src/app/app.module.ts (879 bytes)
 cd client/src/app
 ng generate component register --skip-tests
 ```
+
+# members folder for several members components
+```
+cd client/src/app
+mkdir members
+cd members
+ng generate component member-list --skip-tests
+ng generate component member-detail --skip-tests
+cd ..
+ng generate component lists --skip-tests
+ng generate component messages --skip-tests
+```
+
+# Add toaster notification service ngxToaster v13.0.1
+```
+cd client
+npm install ngx-toastr
+```
+
+Styling was added to angular.json for this package.
+
+            "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "./node_modules/font-awesome/css/font-awesome.css",
+              "./node_modules/ngx-toastr/toastr.css",
+
+Restart the app
+
+```
+cd client/src/app/_guards
+ng generate guard auth --skip-tests
+```
+
+```
+? Which interfaces would you like to implement? CanActivate
+CREATE src/app/_guards/auth.guard.ts (457 bytes)
+```
+
+bootswatch.com
+Has bootstrap themes.
+
+
+```
+cd client
+npm install bootswatch
+```
+
+angular.json file
+
+            "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "./node_modules/bootswatch/dist/united/bootstrap.css",
+
+
+Store modules that app.modules.ts import
+```
+cd src/app
+mkdir _modules
+cd _modules
+ng generate module shared --flat
+```
+
+```
+CREATE src/_modules/shared.module.ts (192 bytes)
+```
+
