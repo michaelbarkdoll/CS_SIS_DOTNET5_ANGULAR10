@@ -15,7 +15,7 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ToastrModule } from 'ngx-toastr';
-import { SharedModule } from 'src/_modules/shared.module';
+import { SharedModule } from 'src/app/_modules/shared.module';
 
 @NgModule({
   declarations: [
