@@ -22,7 +22,7 @@ namespace API.Controllers
         }
 
         // API URL: api/buggy/not-found
-        [Authorize]
+        //[Authorize]
         [HttpGet("not-found")]
         public ActionResult<AppUser> GetNotFound() 
         {
@@ -34,7 +34,7 @@ namespace API.Controllers
         }
 
         // API URL: api/buggy/auth
-        [Authorize]
+        //[Authorize]
         [HttpGet("server-error")]
         public ActionResult<string> GetServerError() 
         {
@@ -46,7 +46,7 @@ namespace API.Controllers
         }
 
         // API URL: api/buggy/auth
-        [Authorize]
+        //[Authorize]
         [HttpGet("bad-request")]
         public ActionResult<string> GetBadRequest() 
         {

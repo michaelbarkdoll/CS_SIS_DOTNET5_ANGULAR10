@@ -143,3 +143,34 @@ ng generate module shared --flat
 CREATE src/_modules/shared.module.ts (192 bytes)
 ```
 
+
+```
+cd src/app
+mkdir errors
+cd errors
+ng g c test-errors --skip-tests
+```
+
+
+```
+cd src/app
+mkdir _interceptors
+cd _interceptors
+ng g interceptor error --skip-tests
+```
+
+```
+CREATE src/app/_interceptors/error.interceptor.ts (410 bytes)
+```
+
+```
+cd src/app
+cd errors
+ng g c not-found --skip-tests
+```
+
+```
+cd src/app
+cd errors
+ng g c server-error --skip-tests
+```

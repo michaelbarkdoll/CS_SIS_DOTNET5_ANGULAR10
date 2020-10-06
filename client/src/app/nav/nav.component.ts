@@ -25,17 +25,26 @@ export class NavComponent implements OnInit {
 
   }
 
+
   login() {
     //console.log(this.model);
     this.accountService.login(this.model).subscribe(response => {
       // console.log(response);
       this.router.navigateByUrl('/members');
       //this.loggedIn = true;
-    }, error => {
-      console.log(error);
-      this.toastr.error(error.error);
     })
   }
+  // login() {
+  //   //console.log(this.model);
+  //   this.accountService.login(this.model).subscribe(response => {
+  //     // console.log(response);
+  //     this.router.navigateByUrl('/members');
+  //     //this.loggedIn = true;
+  //   }, error => {
+  //     console.log(error);
+  //     this.toastr.error(error.error);
+  //   })
+  // }
 
   logout() {
     this.accountService.logout();
