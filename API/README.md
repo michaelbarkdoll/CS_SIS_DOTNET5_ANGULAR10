@@ -45,3 +45,38 @@ sudo update-ca-trust
 
 Trust it in your browser on linux by visiting:
 https://localhost:5001/api/users
+
+
+# Entity Framework
+Stop api server
+```
+dotnet ef migrations add ExtendedUserEntity
+dotnet ef migrations remove #Remove migration created
+```
+
+How do we use conventions to:
+  Make when user is deleted all photos are deleted
+  Make photos not nullable
+
+We need to fully define the relationship.
+
+```
+dotnet ef migrations add ExtendedUserEntity
+dotnet ef database update
+```
+
+
+# Generate seed data
+https://www.json-generator.com/
+
+
+Now restarting app will automatically recreated db if it was dropped.
+
+Automapper
+- Allows us to map from one object to another (that is all it does)
+- Allows us to map a Dto to a Entity to avoid sending back unneed information
+
+nuget:
+Automapper.Extensions.Microsoft.DependencyInjection v8.0.1
+
+

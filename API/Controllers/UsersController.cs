@@ -2,7 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.DTOs;
 using API.Entities;
+using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,39 +16,66 @@ namespace API.Controllers
     // since they've been inherited.
     //[ApiController]
     //[Route("api/[controller]")]
+
+    [Authorize]
     public class UsersController : BaseApiController
     {
         private readonly DataContext _context;
-        public UsersController(DataContext context)
+        private readonly IUserRepository userRepository;
+        private readonly IMapper mapper;
+        //public UsersController(DataContext context)
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
-            this._context = context;
+            this.userRepository = userRepository;
+            this.mapper = mapper;
+            //this._context = context;
         }
 
+        // api/users
         [HttpGet]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         // public ActionResult<IEnumerable<AppUser>> GetUsers() 
         // {
         //     var users = _context.Users.ToList();
 
         //     return users;
         // }
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers() 
+        //public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers() 
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers() 
         {
-            return await _context.Users.ToListAsync();
+            // var users = await this.userRepository.GetUsersAsync();
+            // //var usersToReturn = this.mapper.Map<IEnumerable<<MapTO>>>(FROM);
+            // var usersToReturn = this.mapper.Map<IEnumerable<MemberDto>>(users);
+            // return Ok(usersToReturn);
+
+            var users = await this.userRepository.GetMembersAsync();
+            return Ok(users);
+
+            //return users;
+            //return await _context.Users.ToListAsync();
         }
 
         //api/users/3
-        [Authorize]
-        [HttpGet("{id}")]
+        //[Authorize]
+        [HttpGet("{username}")]
         // public ActionResult<AppUser> GetUser(int id) 
         // {
         //     var user = _context.Users.Find(id);
 
         //     return user;
         // }
-        public async Task<ActionResult<AppUser>> GetUser(int id) 
+        //public async Task<ActionResult<AppUser>> GetUser(string username) 
+        public async Task<ActionResult<MemberDto>> GetUser(string username) 
         {
-            return await _context.Users.FindAsync(id);
+            //var user = await this.userRepository.GetUserByUsernameASync(username);
+            //return this.mapper.Map<MemberDto>(user);
+
+            return await this.userRepository.GetMemberAsync(username);
+            
+            
+
+
+            //return await _context.Users.FindAsync(id);
         }
 
     }

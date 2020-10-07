@@ -43,7 +43,7 @@ namespace API
 
             services.AddControllers();
             services.AddCors();
-            // All identity services that we create are put into API.Extensions.ApplicationServiceExtensions -> service.AddApplicationServices static method
+            // All identity services that we create are put into API.Extensions.IdentityServicesExtensions -> service.AddIdentityServices static method
             services.AddIdentityServices(this._config);
 
             services.AddSwaggerGen(c =>
@@ -71,7 +71,7 @@ namespace API
 
             app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
 
-            app.UseAuthentication();
+            app.UseAuthentication();    
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
