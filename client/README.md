@@ -174,3 +174,37 @@ cd src/app
 cd errors
 ng g c server-error --skip-tests
 ```
+
+
+# Create a new service
+```
+cd src/app/_services
+ng g s members --skip-tests
+```
+
+```
+cd src/app/members
+ng g c member-card --skip-tests
+```
+
+# Create a interceptor to add token with requests
+```
+cd src/app/_interceptors
+ng g interceptor jwt --skip-tests
+```
+
+```
+CREATE src/app/_interceptors/jwt.interceptor.ts (408 bytes)
+```
+
+ngs tabs
+https://valor-software.com/ngx-bootstrap/#/tabs
+
+Google search
+ngx gallery (3 year old one is abandoned)
+https://www.npmjs.com/package/@kolkov/ngx-gallery
+
+```
+cd client
+npm install @kolkov/ngx-gallery --save
+```
