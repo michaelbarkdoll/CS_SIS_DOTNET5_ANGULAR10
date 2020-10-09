@@ -208,3 +208,62 @@ https://www.npmjs.com/package/@kolkov/ngx-gallery
 cd client
 npm install @kolkov/ngx-gallery --save
 ```
+
+```
+cd client/src/app/members
+ng g c member-edit --skip-tests
+```
+
+```
+cd client/src/app/_guards
+ng g guard prevent-unsaved-changes --skip-tests
+```
+
+```
+? Which interfaces would you like to implement? CanDeactivate
+CREATE src/app/_guards/prevent-unsaved-changes.guard.ts (564 bytes)
+```
+
+
+# Loading indicator
+
+ngx-spinner v10.0.1
+https://www.npmjs.com/package/ngx-spinner
+```
+cd client
+###npm install ngx-spinner --save
+npm install @angular/cdk
+ng add ngx-spinner
+```
+
+```
+✔ Packages installed successfully.
+UPDATE src/app/app.module.ts (2472 bytes)
+```
+
+Create server to help with ngx-spinner
+```
+cd client/src/app/_services
+ng g service busy --skip-tests
+```
+```
+CREATE src/app/_services/busy.service.ts (133 bytes)
+```
+
+
+Create interceptor for the busy spinner
+```
+cd client/src/app/_interceptors
+ng g interceptor loading --skip-tests
+```
+
+```
+CREATE src/app/_interceptors/loading.interceptor.ts (412 bytes)
+```
+
+State management solutions:
+Redux, modex .. too much for this application
+
+We'll use the member service to store our data.
+
+

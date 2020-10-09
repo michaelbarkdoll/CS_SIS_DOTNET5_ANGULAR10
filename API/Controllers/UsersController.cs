@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
@@ -67,7 +68,7 @@ namespace API.Controllers
         //public async Task<ActionResult<AppUser>> GetUser(string username) 
         public async Task<ActionResult<MemberDto>> GetUser(string username) 
         {
-            //var user = await this.userRepository.GetUserByUsernameASync(username);
+            //var user = await this.userRepository.GetUserByUsernameAsync(username);
             //return this.mapper.Map<MemberDto>(user);
 
             return await this.userRepository.GetMemberAsync(username);
@@ -78,5 +79,24 @@ namespace API.Controllers
             //return await _context.Users.FindAsync(id);
         }
 
+        // Update a resource on our server
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+        {
+            // Get username From token (can't trust client)
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var user = await this.userRepository.GetUserByUsernameAsync(username); 
+
+            // Use Automapper to make from memberUpdateDto to AppUser
+            this.mapper.Map(memberUpdateDto, user);
+
+            this.userRepository.Update(user);
+
+            if(await this.userRepository.SaveAllAsync())
+                return NoContent();
+            
+            return BadRequest("Failed to update user.");
+        }
     }
 }

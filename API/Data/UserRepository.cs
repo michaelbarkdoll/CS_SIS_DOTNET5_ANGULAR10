@@ -50,7 +50,7 @@ namespace API.Data
             return await context.Users.FindAsync(id);
         }
 
-        public async Task<AppUser> GetUserByUsernameASync(string username)
+        public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
             return await context.Users
                 .Include(p => p.Photos)     // Eager loading
