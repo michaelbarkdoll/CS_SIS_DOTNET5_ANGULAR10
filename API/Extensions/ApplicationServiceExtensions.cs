@@ -13,6 +13,14 @@ namespace API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
+            // Pull cloudinary settings from appsettings.json
+            services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
+            services.AddScoped<IPhotoService, PhotoService>();
+
+            services.Configure<FileRepoSettings>(config.GetSection("FileRepoSettings"));
+            services.AddScoped<IFileRepoService, FileService>();
+            
+
             // services.AddSingleton // Uses resources until application stops
             // services.AddTransient //not for http request typical
             // services.AddScoped// Scope to the lifetime of the http request in this case JWT

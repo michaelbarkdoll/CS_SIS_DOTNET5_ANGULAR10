@@ -267,3 +267,15 @@ Redux, modex .. too much for this application
 We'll use the member service to store our data.
 
 
+```
+cd client/src/app/members
+ng g c photo-editor --skip-tests
+```
+
+ng2-file-upload
+
+http://valor-software.com/ng2-file-upload
+```
+npm install ng2-file-upload --save
+```
+

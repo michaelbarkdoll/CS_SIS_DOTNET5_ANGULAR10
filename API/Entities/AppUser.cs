@@ -23,6 +23,7 @@ namespace API.Entities
         public string City { get; set; }
         public string Country { get; set; }
         public ICollection<Photo> Photos { get; set; }
+        public ICollection<UserFile> UserFiles { get; set; }
 
         // public int GetAge()
         // {

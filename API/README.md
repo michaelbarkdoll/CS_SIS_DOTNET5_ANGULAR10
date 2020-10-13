@@ -80,3 +80,4 @@ nuget:
 Automapper.Extensions.Microsoft.DependencyInjection v8.0.1
 
 
+CloudinaryDotNet by Cloudinaryu v1.13.1

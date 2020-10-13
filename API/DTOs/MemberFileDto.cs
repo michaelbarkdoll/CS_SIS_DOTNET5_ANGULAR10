@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using API.Entities;
 
 namespace API.DTOs
 {
-    public class MemberDto
+    public class MemberFileDto
     {
         public int Id { get; set; }     // Primary key of our database - requires name Id for Entity Framework (not case sensitive)
         public string Username { get; set; }    // ASP.NET Core Identity use a username with uppercase 'UserName' so we stick with convention.
@@ -24,7 +25,6 @@ namespace API.DTOs
         public string City { get; set; }
         public string Country { get; set; }
         public ICollection<PhotoDto> Photos { get; set; }
-
-        //public ICollection<UserFileDto> UserFiles { get; set; }
+        public ICollection<UserFileDto> UserFiles { get; set; }
     }
 }

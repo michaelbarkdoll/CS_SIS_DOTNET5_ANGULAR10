@@ -74,5 +74,23 @@ namespace API.Data
             // Lets EF update and add a flag to the entity to let it know that yep thats been modified
             context.Entry(user).State = EntityState.Modified;
         }
+
+        public async Task<MemberFileDto> GetMemberFilesAsync(string username)
+        {
+            // return await context.Users
+            //     .Where(x => x.UserName == username)
+            //     .Select(user => new MemberDto 
+            //     {
+            //         Id = user.Id,            // Manually map each field... we'll instead use automapper
+            //         Username = user.UserName
+            //     }).SingleOrDefaultAsync();  // This is where we exec database query
+
+            return await context.Users
+                .Where(x => x.UserName == username)
+                .ProjectTo<MemberFileDto>(mapper.ConfigurationProvider) // Use automapper
+                //.ProjectTo<MemberDto>(mapper.ConfigurationProvider) // Use automapper
+                .SingleOrDefaultAsync();  // This is where we exec database query
+
+        }
     }
 }
