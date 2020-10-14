@@ -112,6 +112,9 @@ namespace API.Data.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PublicId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("StorageFileName")
                         .HasColumnType("TEXT");
 

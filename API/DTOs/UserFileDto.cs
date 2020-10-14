@@ -12,8 +12,9 @@ namespace API.DTOs
         public bool isThesis { get; set; }
         public bool isProject { get; set; }
         public bool isOther { get; set; }
+        public string PublicId { get; set; }
         //public string FilePath { get; set; }
-        //public string FileName { get; set; }
+        public string FileName { get; set; }
         //public string StorageFileName { get; set; }
         
         // Fully Define the relationship

@@ -28,8 +28,11 @@ namespace API.Services
             {
                 //var filePath = _dataRepoConfig.Value.PhotosDirectory + user.Id + "-" + Guid.NewGuid() + "-" + file.FileName;
 
+                string uniqueID = Guid.NewGuid().ToString();
+
                 // /sis/userfiles
-                var filePath = fileRepo.RepoDirectory + "/" + fileRepo.UserFilesDirectory + "/" + Guid.NewGuid() + "-" + file.FileName;
+                //var filePath = fileRepo.RepoDirectory + "/" + fileRepo.UserFilesDirectory + "/" + uniqueID + "-" + file.FileName;
+                var filePath = fileRepo.RepoDirectory + "/" + fileRepo.UserFilesDirectory + "/" + uniqueID;
                 // + 
                 // _dataRepoConfig.Value.PhotosDirectory + user.Id + "-" + Guid.NewGuid() + "-" + file.FileName;
 
@@ -49,8 +52,9 @@ namespace API.Services
                         isProject = false,
                         isOther = false,
                         FilePath = filePath,
-                        FileName = filePath,
-                        StorageFileName = filePath
+                        FileName = file.FileName,
+                        StorageFileName = filePath,
+                        PublicId = uniqueID
                         
                         // Fully Define the relationship
                         //public AppUser AppUser { get; set; }

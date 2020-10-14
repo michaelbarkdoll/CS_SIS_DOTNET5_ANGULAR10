@@ -27,6 +27,7 @@ namespace API.Data.Migrations
                     isThesis = table.Column<bool>(type: "INTEGER", nullable: false),
                     isProject = table.Column<bool>(type: "INTEGER", nullable: false),
                     isOther = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PublicId = table.Column<string>(type: "TEXT", nullable: true),
                     FilePath = table.Column<string>(type: "TEXT", nullable: true),
                     FileName = table.Column<string>(type: "TEXT", nullable: true),
                     StorageFileName = table.Column<string>(type: "TEXT", nullable: true),
