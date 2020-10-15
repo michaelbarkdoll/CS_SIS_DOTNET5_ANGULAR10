@@ -279,3 +279,18 @@ http://valor-software.com/ng2-file-upload
 npm install ng2-file-upload --save
 ```
 
+```
+cd client/src/app
+mkdir _forms
+cd client/src/app/_forms
+ng g c text-input --skip-tests
+```
+
+ngx angular package comes with a date picker from ngx-bootstrap components we put it in our shared module
+BsDatepickerModule.forRoot()
+
+```
+cd client/src/app/_forms
+ng g c date-input --skip-tests
+```
+

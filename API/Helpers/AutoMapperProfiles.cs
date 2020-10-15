@@ -22,6 +22,8 @@ namespace API.Helpers
             CreateMap<UserFile, UserFileDto>();
             //CreateMap<MapFrom, To>();
             CreateMap<MemberUpdateDto, AppUser>();
+            //CreateMap<MapFrom, To>(); // Now we don't need to manually map the properties in our account controller
+            CreateMap<RegisterDto, AppUser>();
         }
     }
 }
