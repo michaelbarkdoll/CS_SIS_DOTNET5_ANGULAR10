@@ -294,3 +294,33 @@ cd client/src/app/_forms
 ng g c date-input --skip-tests
 ```
 
+ngx-bootstrap pagination
+https://valor-software.com/ngx-bootstrap/#/pagination
+
+ngx-bootstrap buttons
+https://valor-software.com/ngx-bootstrap/#/buttons
+```
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+
+@NgModule({
+  imports: [ButtonsModule.forRoot(),...]
+})
+```
+
+npmjs.com/package/ngx-timeago
+```
+cd client
+npm install ngx-timeago
+```
+
+```
+import { TimeagoModule } from 'ngx-timeago';
+ 
+@NgModule({
+  imports: [
+    BrowserModule,
+    TimeagoModule.forRoot()
+  ],
+```
+
+

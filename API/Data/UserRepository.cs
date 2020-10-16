@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -37,13 +39,47 @@ namespace API.Data
 
         }
 
-        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        //public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
-            return await context.Users
-                .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
-                .ToListAsync();  // This is where we exec database query
+            var query = context.Users.AsQueryable();
+                
+            // Filter first
+            query = query.Where(u => u.UserName != userParams.CurrentUserName);
+            query = query.Where(u => u.Gender == userParams.Gender);
+
+            var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
+            var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
+
+            query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+
+            query = userParams.OrderBy switch // New C# 8 switch expressions, no need for breaks 
+            {
+                "created" => query.OrderByDescending(u => u.Created),   // created case
+                _ => query.OrderByDescending(u => u.LastActive)     // Default case
+            };
+
+            // Project Automap to MemberDto
+            return await PagedList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(mapper
+                .ConfigurationProvider).AsNoTracking(), 
+                    userParams.PageNumber, userParams.PageSize);
+
+
+            // return await context.Users
+            //     .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
+            //     .ToListAsync();  // This is where we exec database query
+
             //throw new System.NotImplementedException();
         }
+        
+        // public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
+        // {
+        //     var query = context.Users
+        //         .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
+        //         .AsNoTracking();    // Turns off tracking in EF
+        //     return await PagedList<MemberDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
+
+        // }
 
         public async Task<AppUser> GetUserByIdAsync(int id)
         {
