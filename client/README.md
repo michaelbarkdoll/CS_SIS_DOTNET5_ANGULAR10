@@ -324,3 +324,20 @@ import { TimeagoModule } from 'ngx-timeago';
 ```
 
 
+```
+cd client/src/app/_services
+ng g s message --skip-tests
+```
+
+
+```
+cd client/src/app/members
+ng g c member-messages --skip-tests
+```
+
+
+```
+cd client/src/app
+mkdir _resolvers
+cd client/src/app/_resolvers
+```

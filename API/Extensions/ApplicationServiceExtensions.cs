@@ -23,6 +23,7 @@ namespace API.Extensions
             services.AddScoped<IFileRepoService, FileService>();
             
             services.AddScoped<ILikesRespository, LikesRespistory>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
 
             // services.AddSingleton // Uses resources until application stops
             // services.AddTransient //not for http request typical

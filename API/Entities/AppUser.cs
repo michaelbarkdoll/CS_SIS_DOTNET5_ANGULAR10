@@ -34,7 +34,8 @@ namespace API.Entities
         // List of users that currently logged in user has advised
         public ICollection<AppUserAdvisor> AdvisedUsers { get; set; }
         
-
+        public ICollection<Message> MessagesSent { get; set; }
+        public ICollection<Message> MessagesReceived { get; set; }
         // public int GetAge()
         // {
         //     return DateOfBirth.CalculateAge();

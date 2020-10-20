@@ -13,6 +13,7 @@ namespace API.Data
         public DbSet<AppUser> Users { get; set; }   // Create table called Users
         public DbSet<UserLike> Likes { get; set; }
         public DbSet<AppUserAdvisor> Advised { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         // Give entity configuration
         protected override void OnModelCreating(ModelBuilder builder) {
@@ -60,6 +61,17 @@ namespace API.Data
                 .HasForeignKey(s => s.AdvisedUserId)
                 .OnDelete(DeleteBehavior.Cascade);      // If we delete a user we delete the related entities
 
+
+            
+            builder.Entity<Message>()
+                .HasOne(u => u.Recipient)
+                .WithMany(m => m.MessagesReceived)
+                .OnDelete(DeleteBehavior.Restrict);     // We don't want to remove the messages if one user deletes
+
+            builder.Entity<Message>()
+                .HasOne(u => u.Sender)
+                .WithMany(m => m.MessagesSent)
+                .OnDelete(DeleteBehavior.Restrict);     // We don't want to remove the messages if one user deletes
         }
         
     }

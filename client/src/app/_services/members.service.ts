@@ -8,6 +8,7 @@ import { PaginatedResult, Pagination } from '../_models/pagination';
 import { User } from '../_models/user';
 import { UserParams } from '../_models/userParams';
 import { AccountService } from './account.service';
+import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
 
 // const httpOptions = {
 //   headers: new HttpHeaders({
@@ -85,7 +86,13 @@ export class MembersService {
     // Previous get method would get body.  Now that we're passing up the params we'll get the full response back and we need to look into the body to get the body.
     //return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params)
     
-    return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params)
+    // return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params)
+    //   .pipe(map(response => {
+    //     this.memberCache.set(Object.values(userParams).join('-'), response);
+    //     return response;
+    //   }))
+
+    return getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http)
       .pipe(map(response => {
         this.memberCache.set(Object.values(userParams).join('-'), response);
         return response;
@@ -155,10 +162,11 @@ export class MembersService {
   //   return this.http.get<Partial<Member[]>>(this.baseUrl + 'likes?predicate=' + predicate); // liked or likedBy
   // }
   getLikes(predicate: string, pageNumber, pageSize) {
-    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    let params = getPaginationHeaders(pageNumber, pageSize);
     params = params.append('predicate', predicate);
 
-    return this.getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params);
+    return getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http);
+    //return this.getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params);
     //return this.http.get<Partial<Member[]>>(this.baseUrl + 'likes?predicate=' + predicate); // liked or likedBy
   }
 
