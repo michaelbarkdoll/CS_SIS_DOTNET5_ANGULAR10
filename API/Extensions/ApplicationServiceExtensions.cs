@@ -22,6 +22,7 @@ namespace API.Extensions
             services.Configure<FileRepoSettings>(config.GetSection("FileRepoSettings"));
             services.AddScoped<IFileRepoService, FileService>();
             
+            services.AddScoped<ILikesRespository, LikesRespistory>();
 
             // services.AddSingleton // Uses resources until application stops
             // services.AddTransient //not for http request typical
