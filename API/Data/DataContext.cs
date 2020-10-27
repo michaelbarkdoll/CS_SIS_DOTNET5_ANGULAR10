@@ -1,16 +1,24 @@
 using API.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
     // We add this to our Startup class so we can inject DataContext into other parts of our application.
-    public class DataContext : DbContext
+    //public class DataContext : DbContext
+
+
+    // We inherit from IdentityDbContext and give it all of its types.
+    public class DataContext : IdentityDbContext<AppUser, AppRole, int, 
+        IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>, 
+        IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public DataContext(DbContextOptions options) : base(options)
         {
         }
 
-        public DbSet<AppUser> Users { get; set; }   // Create table called Users
+        // public DbSet<AppUser> Users { get; set; }   // Create table called Users     // Remove due to being provided by IdentityDbContext
         public DbSet<UserLike> Likes { get; set; }
         public DbSet<AppUserAdvisor> Advised { get; set; }
         public DbSet<Message> Messages { get; set; }
@@ -18,6 +26,19 @@ namespace API.Data
         // Give entity configuration
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);  // Needed to avoid errors on migrations
+
+            // Configure relationship between AppUser and our UserRoles
+            builder.Entity<AppUser>()
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.User)
+                .HasForeignKey(ur => ur.UserId)
+                .IsRequired();
+            // Configure other side of the relationship between AppRole and our UserRoles
+            builder.Entity<AppRole>()
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.Role)
+                .HasForeignKey(ur => ur.RoleId)
+                .IsRequired();
 
             builder.Entity<UserLike>()
                 .HasKey(k => new {k.SourceUserId, k.LikedUserId});  // Creates the primary key for the UserLike table

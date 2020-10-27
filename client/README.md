@@ -341,3 +341,63 @@ cd client/src/app
 mkdir _resolvers
 cd client/src/app/_resolvers
 ```
+
+
+Admin components
+```
+cd client/src/app
+mkdir admin
+cd client/src/app/admin
+ng g c admin-panel --skip-tests
+```
+
+```
+cd client/src/app/_guards
+ng g guard admin --skip-tests
+? Which interfaces would you like to implement? CanActivate
+CREATE src/app/_guards/admin.guard.ts (458 bytes)
+```
+
+```
+cd client/src/app/
+mkdir _directives
+ng g -h
+```
+
+```
+cd client/src/app/_directives
+ng g directive has-role --skip-tests
+```
+
+```
+CREATE src/app/_directives/has-role.directive.ts (143 bytes)
+UPDATE src/app/app.module.ts (3207 bytes)
+```
+
+```
+cd client/src/app/admin
+ng g c user-management --skip-tests
+ng g c photo-management --skip-tests
+```
+
+```
+cd client/src/app/_services
+ng g s admin --skip-tests
+```
+
+
+valor-software.com/ngx-bootstrap/#/modals
+```
+ng add ngx-bootstrap --component modals
+```
+
+Add to shared.module.ts
+
+
+```
+cd client/src/app
+mkdir modals
+cd client/src/app/modals
+ng g c roles-modal --skip-tests
+```
+

@@ -42,6 +42,7 @@ namespace API.Controllers
         }
 
         // api/users
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         //[AllowAnonymous]
         // public ActionResult<IEnumerable<AppUser>> GetUsers() 
@@ -83,6 +84,7 @@ namespace API.Controllers
         //api/users/3
         //[Authorize]
         //[HttpGet("{username}")]
+        //[Authorize(Roles = "Member")]
         [HttpGet("{username}", Name = "GetUser")]
         // public ActionResult<AppUser> GetUser(int id) 
         // {

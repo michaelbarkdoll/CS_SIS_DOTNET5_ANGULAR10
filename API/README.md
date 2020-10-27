@@ -87,3 +87,15 @@ CloudinaryDotNet by Cloudinaryu v1.13.1
 dotnet ef migrations add LikedEntityAdded
 dotnet ef database update
 ```
+
+Nuget Identity Framework
+```
+microsoft.aspnetcore.identity.entityframeworkcore (preview) 5.0.100-rc.1.20452.10(same version you installed)
+API.csproj
+```
+
+```
+dotnet ef migrations add IdentityAdded
+```
+
+

@@ -7,27 +7,21 @@ using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    public class AccountController : BaseApiController
+    public class AccountController2 : BaseApiController
     {
-        //private readonly DataContext context;
-        private readonly UserManager<AppUser> userManger;
-        private readonly SignInManager<AppUser> signInManager;
+        private readonly DataContext context;
         private readonly ITokenService tokenService;
         private readonly IMapper mapper;
-        //public AccountController(DataContext context, ITokenService tokenService, IMapper mapper)   // Inject token service into account controller
-        public AccountController(UserManager<AppUser> userManger, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper)   // Inject token service into account controller
+        public AccountController2(DataContext context, ITokenService tokenService, IMapper mapper)   // Inject token service into account controller
         {
             this.mapper = mapper;
-            this.userManger = userManger;
-            this.signInManager = signInManager;
             this.tokenService = tokenService;
-            //this.context = context;
+            this.context = context;
 
         }
 
@@ -54,24 +48,14 @@ namespace API.Controllers
             //     PasswordSalt = hmac.Key
             // };
 
-            //this.context.Users.Add(user);       // Just tracking in EF
-            //await this.context.SaveChangesAsync();  // Saves changes to Entity Framework
-
-            // Creates user and saves into DB
-            var result = await userManger.CreateAsync(user, registerDto.Password);
-
-            if(!result.Succeeded)
-                return BadRequest(result.Errors);
-
-            var roleResult = await userManger.AddToRoleAsync(user, "Member");
-
-            if(!roleResult.Succeeded)
-                return BadRequest(roleResult.Errors);
+            this.context.Users.Add(user);       // Just tracking in EF
+            await this.context.SaveChangesAsync();  // Saves changes to Entity Framework
 
             //return user;
             return new UserDto
             {
                 Username = user.UserName,
+                //Token = this.tokenService.CreateToken(user),
                 Token = await this.tokenService.CreateToken(user),
                 KnownAs = user.KnownAs,
                 Gender = user.Gender
@@ -84,10 +68,9 @@ namespace API.Controllers
         {
 
             //var user = await this.context.Users.FirstOrDefaultAsync
-            //var user = await this.context.Users
-            var user = await this.userManger.Users
+            var user = await this.context.Users
                 .Include(p => p.Photos)
-                .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
+                .SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
 
             if (user == null)
                 return Unauthorized("Invalid username");
@@ -104,19 +87,11 @@ namespace API.Controllers
             }
             */
 
-            // Here the password is checked against the 10000 salt iteration version (use a different password auth e.g., ldap here)
-            var result = await signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-            
-            //await signInManager.SignInAsync(user, true, "ldap");
-            
-
-            if (!result.Succeeded)
-                return Unauthorized();
-
             //return user;
             return new UserDto
             {
                 Username = user.UserName,
+                //Token = this.tokenService.CreateToken(user),
                 Token = await this.tokenService.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
                 KnownAs = user.KnownAs,
@@ -127,8 +102,7 @@ namespace API.Controllers
         }
         private async Task<bool> UserExists(string username)
         {
-            return await this.userManger.Users.AnyAsync(x => x.UserName == username.ToLower());
-            //return await this.context.Users.AnyAsync(x => x.UserName == username.ToLower());
+            return await this.context.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
     }
 }
