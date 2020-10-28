@@ -98,4 +98,6 @@ API.csproj
 dotnet ef migrations add IdentityAdded
 ```
 
-
+```
+mkdir API/SignalR
+```

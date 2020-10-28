@@ -15,7 +15,8 @@ namespace API.Entities
         // Message specific properties
         public string Content { get; set; }
         public DateTime? DateRead { get; set; } // null if not read
-        public DateTime MessageSent { get; set; } = DateTime.Now;
+        public DateTime MessageSent { get; set; } = DateTime.UtcNow;
+        //public DateTime MessageSent { get; set; } = DateTime.Now;
         // We'll only delete a message from server if both the sender and recipient have deleted the message
         public bool SenderDeleted { get; set; }
         public bool RecipientDeleted { get; set; }

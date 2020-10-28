@@ -4,6 +4,7 @@ import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
+import { PrescenceService } from './prescence.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AccountService {
   private currentUserSource = new ReplaySubject<User>(1); // like a buffer obj any subscribers will get last value or number of values (1); we store this value of objects
   currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private presence: PrescenceService) { }
   
   login(model: any) {
     return this.http.post(this.baseUrl + 'account/login', model).pipe(
@@ -22,6 +23,7 @@ export class AccountService {
         const user = response;
         if (user) {
           this.setCurrentUser(user);
+          this.presence.createHubConnection(user);
           // localStorage.setItem('user', JSON.stringify(user));
           // this.currentUserSource.next(user);  // Set the observable to the user object that we get back from the API
         }
@@ -34,6 +36,7 @@ export class AccountService {
       map((user: User) => {
         if (user) {
           this.setCurrentUser(user);
+          this.presence.createHubConnection(user);
           // localStorage.setItem('user', JSON.stringify(user));
           // this.currentUserSource.next(user);
         }
@@ -54,6 +57,7 @@ export class AccountService {
   logout() {
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
+    this.presence.stopHubConnection();
   }
 
   // Token has three parts:

@@ -401,3 +401,20 @@ cd client/src/app/modals
 ng g c roles-modal --skip-tests
 ```
 
+Install npm package for client side v3.1.9
+```
+cd client
+npm install @microsoft/signalr
+```
+
+```
+cd client/src/app/_services
+ng g s prescence --skip-tests
+```
+
+Most scalable method is to implement something like redis and use the dataset across many dotnet backends
+https://redis.io/
+
+We use a dictionary here but this is not scalable it wont work on multiple servers
+Alternative could use a Database to share the information
+
