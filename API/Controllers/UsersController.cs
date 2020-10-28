@@ -24,17 +24,17 @@ namespace API.Controllers
     [Authorize]
     public class UsersController : BaseApiController
     {
-        private readonly DataContext _context;
-        private readonly IUserRepository userRepository;
+        // private readonly DataContext _context;
+        private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly IPhotoService photoService;
         private readonly IFileRepoService fileRepoService;
 
         //public UsersController(DataContext context)
-        public UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService, IFileRepoService fileRepoService)
-        //public UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
+        public UsersController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService, IFileRepoService fileRepoService)
+        //public UsersController(IunitOfWork.UserRepository unitOfWork.UserRepository, IMapper mapper, IPhotoService photoService)
         {
-            this.userRepository = userRepository;
+            this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.photoService = photoService;
             this.fileRepoService = fileRepoService;
@@ -57,21 +57,22 @@ namespace API.Controllers
         // Now it will match user string params in the api
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams) 
         {
-            // var users = await this.userRepository.GetUsersAsync();
+            // var users = await this.unitOfWork.UserRepository.GetUsersAsync();
             // //var usersToReturn = this.mapper.Map<IEnumerable<<MapTO>>>(FROM);
             // var usersToReturn = this.mapper.Map<IEnumerable<MemberDto>>(users);
             // return Ok(usersToReturn);
 
-            //var users = await this.userRepository.GetMembersAsync();
+            //var users = await this.unitOfWork.UserRepository.GetMembersAsync();
 
-            var user = await userRepository.GetUserByUsernameAsync(User.GetUsername());
-            //userParams.CurrentUserName = User.GetUsername();
-            userParams.CurrentUserName = user.UserName;
+            // var user = await this.unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
+            var gender = await this.unitOfWork.UserRepository.GetUserGender(User.GetUsername());
+            userParams.CurrentUserName = User.GetUsername();    // From Token
+            // userParams.CurrentUserName = user.UserName;
 
             if (string.IsNullOrEmpty(userParams.Gender))
-                userParams.Gender = user.Gender == "male" ? "female" : "male";
+                userParams.Gender = gender == "male" ? "female" : "male";
 
-            var users = await this.userRepository.GetMembersAsync(userParams);
+            var users = await this.unitOfWork.UserRepository.GetMembersAsync(userParams);
 
             Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
 
@@ -95,10 +96,10 @@ namespace API.Controllers
         //public async Task<ActionResult<AppUser>> GetUser(string username) 
         public async Task<ActionResult<MemberDto>> GetUser(string username) 
         {
-            //var user = await this.userRepository.GetUserByUsernameAsync(username);
+            //var user = await this.unitOfWork.UserRepository.GetUserByUsernameAsync(username);
             //return this.mapper.Map<MemberDto>(user);
 
-            return await this.userRepository.GetMemberAsync(username);
+            return await this.unitOfWork.UserRepository.GetMemberAsync(username);
             
             
 
@@ -114,14 +115,14 @@ namespace API.Controllers
             //var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var username = User.GetUsername();
 
-            var user = await this.userRepository.GetUserByUsernameAsync(username); 
+            var user = await this.unitOfWork.UserRepository.GetUserByUsernameAsync(username); 
 
             // Use Automapper to make from memberUpdateDto to AppUser
             this.mapper.Map(memberUpdateDto, user);
 
-            this.userRepository.Update(user);
+            this.unitOfWork.UserRepository.Update(user);
 
-            if(await this.userRepository.SaveAllAsync())
+            if(await this.unitOfWork.Complete())
                 return NoContent();
             
             return BadRequest("Failed to update user.");
@@ -131,7 +132,7 @@ namespace API.Controllers
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
             //var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
 
             var result = await photoService.AddPhotoAsync(file);
 
@@ -151,7 +152,7 @@ namespace API.Controllers
 
             user.Photos.Add(photo);
 
-            if (await userRepository.SaveAllAsync())
+            if (await unitOfWork.Complete())
             {
                 // return mapper.Map<PhotoDto>(photo);
 
@@ -165,7 +166,7 @@ namespace API.Controllers
 
         [HttpPut("set-main-photo/{photoId}")]
         public async Task<ActionResult> SetMainPhoto(int photoId ) {
-            var user = await userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
 
             var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
 
@@ -179,7 +180,7 @@ namespace API.Controllers
 
             photo.IsMain = true;
 
-            if (await userRepository.SaveAllAsync())
+            if (await unitOfWork.Complete())
                 return NoContent();
 
             return BadRequest("Failed to set main photo");
@@ -189,7 +190,7 @@ namespace API.Controllers
         [HttpDelete("delete-photo/{photoId}")]
         public async Task<ActionResult> DeletePhoto(int photoId) {
             // Pull user from JWT Bearer token
-            var user = await userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
 
             var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
 
@@ -209,7 +210,7 @@ namespace API.Controllers
 
             user.Photos.Remove(photo);
 
-            if (await userRepository.SaveAllAsync())
+            if (await unitOfWork.Complete())
                 return Ok();
             
             return BadRequest("Failed to delete the photo");
@@ -221,7 +222,7 @@ namespace API.Controllers
         //public async Task<ActionResult<PhotoDto>> AddUserFile(IFormFile file)
         public async Task<ActionResult<UserFileDto>> AddUserFile(IFormFile file)
         {
-            var user = await userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
 
             var fileresult = await fileRepoService.AddFileAsync(file);
 
@@ -237,7 +238,7 @@ namespace API.Controllers
             if( user.UserFiles != null)
                 user.UserFiles.Add(fileresult);
 
-            if (await userRepository.SaveAllAsync())
+            if (await unitOfWork.Complete())
             {
                 return CreatedAtRoute("GetUserFiles", new {username = user.UserName}, mapper.Map<UserFileDto>(fileresult));
             }
@@ -249,11 +250,11 @@ namespace API.Controllers
         [HttpGet("get-user-files/{username}", Name = "GetUserFiles")]
         public async Task<ActionResult<MemberFileDto>> GetUserFiles(string username) 
         {
-            //var user = await this.userRepository.GetUserByUsernameAsync(username);
+            //var user = await this.unitOfWork.UserRepository.GetUserByUsernameAsync(username);
             //return this.mapper.Map<MemberDto>(user);
 
-            //return await this.userRepository.GetMemberAsync(username);
-            return await this.userRepository.GetMemberFilesAsync(username);
+            //return await this.unitOfWork.UserRepository.GetMemberAsync(username);
+            return await this.unitOfWork.UserRepository.GetMemberFilesAsync(username);
             
 
 

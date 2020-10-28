@@ -418,3 +418,14 @@ https://redis.io/
 We use a dictionary here but this is not scalable it wont work on multiple servers
 Alternative could use a Database to share the information
 
+```
+[cisadmin@localhost SIS]$ cd client/src/app/_services/
+[cisadmin@localhost _services]$ ng g s confirm --skip-tests
+CREATE src/app/_services/confirm.service.ts (136 bytes)
+[cisadmin@localhost _services]$ 
+```
+
+```
+cd client/src/app/modals
+ng g c confirm-dialog --skip-tests
+```

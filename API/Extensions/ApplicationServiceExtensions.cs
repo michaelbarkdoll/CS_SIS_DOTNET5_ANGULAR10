@@ -25,15 +25,17 @@ namespace API.Extensions
             services.Configure<FileRepoSettings>(config.GetSection("FileRepoSettings"));
             services.AddScoped<IFileRepoService, FileService>();
             
-            services.AddScoped<ILikesRespository, LikesRespistory>();
-            services.AddScoped<IMessageRepository, MessageRepository>();
+            // Add service for our repository
+            // services.AddScoped<ILikesRespository, LikesRepository>();
+            // services.AddScoped<IMessageRepository, MessageRepository>();
+            // services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // services.AddSingleton // Uses resources until application stops
             // services.AddTransient //not for http request typical
             // services.AddScoped// Scope to the lifetime of the http request in this case JWT
             services.AddScoped<ITokenService, TokenService>();
-            // Add service for our repository
-            services.AddScoped<IUserRepository, UserRepository>();
+            
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);    // Allows automapper to create maps
             services.AddDbContext<DataContext>(options =>
             {

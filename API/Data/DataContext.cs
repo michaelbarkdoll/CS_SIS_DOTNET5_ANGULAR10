@@ -1,7 +1,11 @@
+using System;
 using API.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Data
 {
@@ -10,8 +14,8 @@ namespace API.Data
 
 
     // We inherit from IdentityDbContext and give it all of its types.
-    public class DataContext : IdentityDbContext<AppUser, AppRole, int, 
-        IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>, 
+    public class DataContext : IdentityDbContext<AppUser, AppRole, int,
+        IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public DataContext(DbContextOptions options) : base(options)
@@ -26,7 +30,8 @@ namespace API.Data
         public DbSet<Connection> Connections { get; set; }
 
         // Give entity configuration
-        protected override void OnModelCreating(ModelBuilder builder) {
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
             base.OnModelCreating(builder);  // Needed to avoid errors on migrations
 
             // Configure relationship between AppUser and our UserRoles
@@ -43,7 +48,7 @@ namespace API.Data
                 .IsRequired();
 
             builder.Entity<UserLike>()
-                .HasKey(k => new {k.SourceUserId, k.LikedUserId});  // Creates the primary key for the UserLike table
+                .HasKey(k => new { k.SourceUserId, k.LikedUserId });  // Creates the primary key for the UserLike table
 
             // Define the relationship a:
             //      SourceUser can like many other users (l.LikedUsers)
@@ -52,7 +57,7 @@ namespace API.Data
                 .WithMany(l => l.LikedUsers)
                 .HasForeignKey(s => s.SourceUserId)
                 .OnDelete(DeleteBehavior.Cascade);      // If we delete a user we delete the related entities
-                // Use: .OnDelete(DeleteBehavior.NoAction); if using SQL server
+                                                        // Use: .OnDelete(DeleteBehavior.NoAction); if using SQL server
 
             // Other side of relationship
             //      A LikedUser can have many LikedByUsers
@@ -64,7 +69,7 @@ namespace API.Data
 
 
             builder.Entity<AppUserAdvisor>()
-                .HasKey(k => new {k.SourceUserId, k.AdvisedUserId});  // Creates the primary key for the UserLike table
+                .HasKey(k => new { k.SourceUserId, k.AdvisedUserId });  // Creates the primary key for the UserLike table
 
             // Define the relationship a:
             //      SourceUser can advise many other users (l.AdvisedUsers)
@@ -73,7 +78,7 @@ namespace API.Data
                 .WithMany(l => l.AdvisedUsers)
                 .HasForeignKey(s => s.SourceUserId)
                 .OnDelete(DeleteBehavior.Cascade);      // If we delete a user we delete the related entities
-                // Use: .OnDelete(DeleteBehavior.NoAction); if using SQL server
+                                                        // Use: .OnDelete(DeleteBehavior.NoAction); if using SQL server
 
             // Other side of relationship
             //      An AdvisedUser can have many AdvisedByUsers
@@ -85,7 +90,7 @@ namespace API.Data
                 .OnDelete(DeleteBehavior.Cascade);      // If we delete a user we delete the related entities
 
 
-            
+
             builder.Entity<Message>()
                 .HasOne(u => u.Recipient)
                 .WithMany(m => m.MessagesReceived)
@@ -95,7 +100,52 @@ namespace API.Data
                 .HasOne(u => u.Sender)
                 .WithMany(m => m.MessagesSent)
                 .OnDelete(DeleteBehavior.Restrict);     // We don't want to remove the messages if one user deletes
+            
+            builder.ApplyUtcDateTimeConverter();
         }
-        
+
+    }
+
+    public static class UtcDateAnnotation
+    {
+        private const String IsUtcAnnotation = "IsUtc";
+        private static readonly ValueConverter<DateTime, DateTime> UtcConverter =
+          new ValueConverter<DateTime, DateTime>(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+
+        private static readonly ValueConverter<DateTime?, DateTime?> UtcNullableConverter =
+          new ValueConverter<DateTime?, DateTime?>(v => v, v => v == null ? v : DateTime.SpecifyKind(v.Value, DateTimeKind.Utc));
+
+        public static PropertyBuilder<TProperty> IsUtc<TProperty>(this PropertyBuilder<TProperty> builder, Boolean isUtc = true) =>
+          builder.HasAnnotation(IsUtcAnnotation, isUtc);
+
+        public static Boolean IsUtc(this IMutableProperty property) =>
+          ((Boolean?)property.FindAnnotation(IsUtcAnnotation)?.Value) ?? true;
+
+        /// <summary>
+        /// Make sure this is called after configuring all your entities.
+        /// </summary>
+        public static void ApplyUtcDateTimeConverter(this ModelBuilder builder)
+        {
+            foreach (var entityType in builder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (!property.IsUtc())
+                    {
+                        continue;
+                    }
+
+                    if (property.ClrType == typeof(DateTime))
+                    {
+                        property.SetValueConverter(UtcConverter);
+                    }
+
+                    if (property.ClrType == typeof(DateTime?))
+                    {
+                        property.SetValueConverter(UtcNullableConverter);
+                    }
+                }
+            }
+        }
     }
 }

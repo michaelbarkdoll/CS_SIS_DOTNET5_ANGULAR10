@@ -100,10 +100,10 @@ namespace API.Data
                 .ToListAsync();
         }
 
-        public async Task<bool> SaveAllAsync()
-        {
-            return await context.SaveChangesAsync() > 0;    // Greater than 0 changes
-        }
+        // public async Task<bool> SaveAllAsync()
+        // {
+        //     return await context.SaveChangesAsync() > 0;    // Greater than 0 changes
+        // }
 
         public void Update(AppUser user)
         {
@@ -127,6 +127,13 @@ namespace API.Data
                 //.ProjectTo<MemberDto>(mapper.ConfigurationProvider) // Use automapper
                 .SingleOrDefaultAsync();  // This is where we exec database query
 
+        }
+
+        public async Task<string> GetUserGender(string username)
+        {
+            return await this.context.Users
+                .Where(x => x.UserName == username)
+                .Select(x => x.Gender).FirstOrDefaultAsync();
         }
     }
 }
