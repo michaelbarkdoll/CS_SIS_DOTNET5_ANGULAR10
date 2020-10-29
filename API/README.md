@@ -303,3 +303,20 @@ userfiles
     "DocumentsDirectory": "documents",
     "UserFilesDirectory": "userfiles"
 
+Switch to new branch
+```
+git checkout -b FixMessages
+```
+```
+git add .
+git commit -m "Applied fix"
+git branch -a
+git push origin FixMessages
+```
+
+Publishes our branch into GitHub, doesn't trigger into Heroku.
+
+
+
+
+
