@@ -429,3 +429,14 @@ CREATE src/app/_services/confirm.service.ts (136 bytes)
 cd client/src/app/modals
 ng g c confirm-dialog --skip-tests
 ```
+
+```
+ng build
+```
+angular.io/guide/deployment
+
+
+https://angular.io/guide/deployment#production-optimizations
+```
+ng build --prod
+```

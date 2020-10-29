@@ -101,3 +101,60 @@ dotnet ef migrations add IdentityAdded
 ```
 mkdir API/SignalR
 ```
+
+
+
+EF doesn't support NoSQL databases like MongoDB...
+
+
+docs.microsoft.com/en-us/ef/core/providers/?tabs=dotnet-core-cli
+
+
+docker!!!
+
+docker.com/get-started
+Docker Desktop
+Dashboard
+
+hub.docker.com
+postgres
+
+hub.docker.com/_/postgres
+```
+docker run --name dev -e POSTGRES_USER=appuser -e POSTGRES_PASSWORD=Pa$$w0rd -p 5432:5432 -d postgres:latest
+```
+
+
+```
+docker inspect 1b415b3b384f
+```
+
+```
+"POSTGRES_USER=appuser",
+                "POSTGRES_PASSWORD=Pa16173w0rd",
+```
+
+pgadmin.org
+
+http://127.0.0.1:56861/browser
+
+```
+sudo rpm -i https://ftp.postgresql.org/pub/pgadmin/pgadmin4/yum/pgadmin4-redhat-repo-1-1.noarch.rpm
+# Install for both desktop and web modes.
+sudo yum install pgadmin4
+
+# Install for desktop mode only.
+sudo yum install pgadmin4-desktop
+
+# Install for web mode only.
+sudo yum install pgadmin4-web
+```
+
+Create Server
+dev
+connection
+localhost
+5432
+appuser
+Pa6340w0rd
+
