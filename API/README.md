@@ -280,7 +280,7 @@ git push heroku master
 passwordsgenerator.net
 32 length
 ```
-heroku config:set TokenKey=NVmrDfUc6cyu6uuUNB5qzkNHLWRUkDKF
+heroku config:set TokenKey=
 ```
 
 http://cssiuc-sis.herokuapp.com/
