@@ -158,3 +158,148 @@ localhost
 appuser
 Pa6340w0rd
 
+# Switch EF from SQLITE to Postgres
+```
+dotnet ef databse drop
+```
+
+Npgsql.EntityFrameworkCore.PostgreSQL
+v5.0.0.rc1
+NuGet Gallery
+
+
+appsettings.Development.json
+```
+  "ConnectionStrings" : {
+    "DefaultConnection": "Data source=app.db"
+  },
+```
+
+Change to a postgres connection string:
+```
+  "ConnectionStrings" : {
+    "DefaultConnection": "Server=localhost; Port=5432; User Id=appuser; Password=Pa16173w0rd; Database=sis"
+  },
+```
+
+ApplicationServiceExtensions.cs
+```
+            services.AddDbContext<DataContext>(options =>
+            {
+                //options.UseSqlite("Connection string");
+                options.UseSqlite(config.GetConnectionString("DefaultConnection"));
+            });
+```
+
+```
+            services.AddDbContext<DataContext>(options =>
+            {
+                //options.UseSqlite("Connection string");
+                //options.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                options.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+            });
+```
+
+```
+dotnet ef migrations add PostgresInitial -o Data/Migrations
+```
+
+```
+dotnet watch run
+```
+
+devcenter.heroku.com/articles/heroku-cli
+
+Heroku CLI
+```
+sudo snap install --classic heroku
+```
+
+```
+$ heroku --version
+ ›   Warning: Our terms of service have changed: https://dashboard.heroku.com/terms-of-service
+heroku/7.46.2 linux-x64 node-v12.16.2
+$ heroku
+```
+
+Heroku doens't offically support dotnet
+
+We're using a community building pack (google search)
+heroku dotnet buildpack
+
+https://elements.heroku.com/buildpacks/jincod/dotnetcore-buildpack
+
+.NET Core Preview release
+```
+heroku buildpacks:set https://github.com/jincod/dotnetcore-buildpack#preview
+```
+
+Create a new app in heroku
+
+cssiuc-sis
+
+```
+$ heroku login
+```
+
+```
+heroku git:remote -a cssiuc-sis
+```
+
+```
+heroku buildpacks:set https://github.com/jincod/dotnetcore-buildpack#preview
+```
+
+Resources Addon
+postgres
+Heroku Postgres
+Hobby Dev - Free
+
+Settings
+Config Vars
+
+```
+CloudinarySettings:CloudName
+demwnups5
+CloudinarySettings:ApiKey
+822136612579413
+CloudinarySettings:ApiSecret
+TokenKey
+
+```
+
+
+```
+heroku config:set ASPNETCORE_ENVIRONMENT=Production
+```
+
+```
+git push heroku master
+```
+
+passwordsgenerator.net
+32 length
+```
+heroku config:set TokenKey=NVmrDfUc6cyu6uuUNB5qzkNHLWRUkDKF
+```
+
+http://cssiuc-sis.herokuapp.com/
+https://cssiuc-sis.herokuapp.com/
+
+```
+FileRepoSettings:RepoDirectory
+/sis
+FileRepoSettings:PhotosDirectory
+userphotos
+FileRepoSettings:DocumentsDirectory
+documents
+FileRepoSettings:UserFilesDirectory
+userfiles
+```
+
+"FileRepoSettings": {
+    "RepoDirectory": "/sis",
+    "PhotosDirectory": "userphotos",
+    "DocumentsDirectory": "documents",
+    "UserFilesDirectory": "userfiles"
+

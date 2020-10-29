@@ -75,7 +75,7 @@ namespace API
             app.UseCors(policy => policy.AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()
-                .WithOrigins("https://localhost:4200"));
+                .WithOrigins("https://localhost:4200", "https://cssiuc-sis.herokuapp.com"));
 
             app.UseAuthentication();    
             app.UseAuthorization();
