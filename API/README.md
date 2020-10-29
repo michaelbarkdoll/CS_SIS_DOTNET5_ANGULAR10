@@ -318,5 +318,12 @@ Publishes our branch into GitHub, doesn't trigger into Heroku.
 
 
 
+```
+git checkout master
+git merge FixMessages
+```
 
+```
+ng build --prod
+```
 
