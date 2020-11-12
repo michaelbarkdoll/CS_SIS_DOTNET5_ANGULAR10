@@ -25,6 +25,9 @@ namespace API.Extensions
 
             services.Configure<FileRepoSettings>(config.GetSection("FileRepoSettings"));
             services.AddScoped<IFileRepoService, FileService>();
+
+            services.Configure<sshSettings>(config.GetSection("sshSettings"));
+            services.AddScoped<IAccountService, AccountService>();
             
             // Add service for our repository
             // services.AddScoped<ILikesRespository, LikesRepository>();
