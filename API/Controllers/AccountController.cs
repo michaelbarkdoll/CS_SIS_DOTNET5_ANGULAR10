@@ -88,10 +88,9 @@ namespace API.Controllers
         //public async Task<ActionResult<AppUser>> Register(RegisterDto registerDto)
         public async Task<ActionResult<UserDto>> LoginV2(LoginDto loginDto)
         {
-
             // Authenticate user
             if( ! await this.accountService.AuthenticateUserAsync(loginDto.Username, loginDto.Password)) {
-                System.Console.WriteLine($"{loginDto.Username} {loginDto.Password}");
+                // System.Console.WriteLine($"{loginDto.Username} {loginDto.Password}");
                 return BadRequest("Invalid login");
             }
 
@@ -117,16 +116,20 @@ namespace API.Controllers
                 // await signInManager.SignInAsync(user, true);
                 // await signInManager.SignOutAsync();
 
-                var result = await signInManager.CheckPasswordSignInAsync(user, "Pa$$w0rd", false);
-                // var result = await signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-                if (!result.Succeeded)
-                    return Unauthorized();
-             
+                if (loginDto.Username.Equals("admin") ){
+                    var result = await signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-
-
-                // if (!result.Succeeded)
-                //     return Unauthorized();
+                    if (!result.Succeeded)
+                        return Unauthorized();
+                }
+                else {
+                    // Since auth is against ssh store normal users password as a fake password.
+                    // This will be improved later on...
+                    var result = await signInManager.CheckPasswordSignInAsync(user, "Pa$$w0rd", false);
+                    
+                    if (!result.Succeeded)
+                        return Unauthorized();
+                }
 
                 //return user;
 
