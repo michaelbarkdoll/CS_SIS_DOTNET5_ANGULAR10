@@ -327,3 +327,14 @@ git merge FixMessages
 ng build --prod
 ```
 
+
+
+Dockerfile
+```
+#FROM mcr.microsoft.com/dotnet/nightly/runtime:5.0
+FROM mcr.microsoft.com/dotnet/nightly/aspnet:5.0
+
+COPY bin/Release/net5.0/publish/ /App/
+WORKDIR /App
+ENTRYPOINT ["dotnet", "/App/NetCore.Docker.dll"]
+```
