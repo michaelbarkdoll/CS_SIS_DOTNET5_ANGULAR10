@@ -88,7 +88,34 @@ namespace API.Controllers
         //public async Task<ActionResult<AppUser>> Register(RegisterDto registerDto)
         public async Task<ActionResult<UserDto>> LoginV2(LoginDto loginDto)
         {
-            // Authenticate user
+            // Authenticate local admin superuser
+            if (loginDto.Username.Equals("admin") ){
+                if (await UserExists(loginDto.Username)) {
+                    // Proceed with login
+                    var user = await this.userManger.Users
+                        .Include(p => p.Photos)
+                        .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
+
+                    if (user == null)
+                        return Unauthorized("Invalid username");
+
+                    var result = await signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+
+                    if (!result.Succeeded)
+                        return Unauthorized();
+                
+                    return new UserDto
+                    {
+                        Username = user.UserName,
+                        Token = await this.tokenService.CreateToken(user),
+                        PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+                        KnownAs = user.KnownAs,
+                        Gender = user.Gender
+                    };
+                }
+            }   
+
+            // Authenticate other users via ssh
             if( ! await this.accountService.AuthenticateUserAsync(loginDto.Username, loginDto.Password)) {
                 // System.Console.WriteLine($"{loginDto.Username} {loginDto.Password}");
                 return BadRequest("Invalid login");
@@ -116,20 +143,13 @@ namespace API.Controllers
                 // await signInManager.SignInAsync(user, true);
                 // await signInManager.SignOutAsync();
 
-                if (loginDto.Username.Equals("admin") ){
-                    var result = await signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-
-                    if (!result.Succeeded)
-                        return Unauthorized();
-                }
-                else {
-                    // Since auth is against ssh store normal users password as a fake password.
-                    // This will be improved later on...
-                    var result = await signInManager.CheckPasswordSignInAsync(user, "Pa$$w0rd", false);
-                    
-                    if (!result.Succeeded)
-                        return Unauthorized();
-                }
+                
+                // Currently storing ssh users password as a fake password inside MS Identity. (Remove this later when more local accounts are permitted)
+                var result = await signInManager.CheckPasswordSignInAsync(user, "Pa$$w0rd", false);
+                
+                if (!result.Succeeded)
+                    return Unauthorized();
+                
 
                 //return user;
 
