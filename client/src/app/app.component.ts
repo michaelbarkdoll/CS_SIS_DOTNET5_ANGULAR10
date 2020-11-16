@@ -10,7 +10,8 @@ import { PrescenceService } from './_services/prescence.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Student Information System';
+  // title = 'Student Information System';
+  title = 'SIU - School of Computing';
   users: any;
 
   //constructor(private http: HttpClient, private accountService: AccountService) {}
