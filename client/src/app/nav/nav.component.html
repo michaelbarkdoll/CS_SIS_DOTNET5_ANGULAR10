@@ -17,11 +17,11 @@
                 <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-animated">
                     <li><div class="dropdown-item"></div><b>Website Development:</b></li>
                     <li><div class="dropdown-divider"></div></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/website' routerLinkActive='active'>My Website Info</a></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/website/url' routerLinkActive='active'>Customize Website URL</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/webinfo' routerLinkActive='active'>My Website Info</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/weburl' routerLinkActive='active'>Customize Website URL</a></li>
                     <li><div class="dropdown-divider"></div><b>Microservice Management:</b></li>
                     <li><div class="dropdown-divider"></div></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/website/docker' routerLinkActive='active'>Docker Containers</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/docker' routerLinkActive='active'>Docker Containers</a></li>
                 </ul>
             </div>
 
@@ -35,12 +35,12 @@
                 <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-animated">
                     <li><div class="dropdown-item"></div><b>Online Computer Labs:</b></li>
                     <li><div class="dropdown-divider"></div></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/guacamole' routerLinkActive='active'>Access Linux Labs</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/guacamole-linux' routerLinkActive='active'>Access Linux Labs</a></li>
                     <li role="menuitem"><a class="dropdown-item" routerLink='/vdi' routerLinkActive='active'>Access Windows Labs</a></li>
                     <li><div class="dropdown-divider"></div><b>Request Personalized Access:</b></li>
                     <li><div class="dropdown-divider"></div></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/labs/research' routerLinkActive='active'>Research Lab Remote Access</a></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/labs/vpn' routerLinkActive='active'>SIU VPN Access</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/researchlab' routerLinkActive='active'>Research Lab Remote Access</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/vpn' routerLinkActive='active'>SIU VPN Access</a></li>
                 </ul>
             </div>
 
@@ -54,14 +54,14 @@
                 <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-animated">
                     <li><div class="dropdown-item"></div><b>Academic Program:</b></li>
                     <li><div class="dropdown-divider"></div></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/printer/jobs' routerLinkActive='active'>My Print Jobs</a></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/printer/quota' routerLinkActive='active'>My Print Quota</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/printjobs' routerLinkActive='active'>My Print Jobs</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/printquota' routerLinkActive='active'>My Print Quota</a></li>
                     <li><div class="dropdown-divider"></div></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/printer/submit' routerLinkActive='active'>Submit a Print Job</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/printsubmit' routerLinkActive='active'>Submit a Print Job</a></li>
                     <li><div class="dropdown-divider"></div></li>
                     <li><div class="dropdown-item"></div><b>Campus Printing:</b></li>
                     <li><div class="dropdown-divider"></div></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/printer/cwps' routerLinkActive='active'>Campus-Wide Print Services</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/cwps' routerLinkActive='active'>Campus-Wide Print Services</a></li>
                 </ul>
             </div>
 
@@ -77,18 +77,18 @@
                 <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-animated">
                     <li><div class="dropdown-item"></div><b>Database Access:</b></li>
                     <li><div class="dropdown-divider"></div></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/database/mysql' routerLinkActive='active'>MySQL Access</a></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/database/oracle' routerLinkActive='active'>Oracle Access</a></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/database/nosql' routerLinkActive='active'>NoSQL Access</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/mysql' routerLinkActive='active'>MySQL Access</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/oracle' routerLinkActive='active'>Oracle Access</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/nosql' routerLinkActive='active'>NoSQL Access</a></li>
 
                     <li><div class="dropdown-divider"></div><b>Public SSH Access:</b></li>
                     <li><div class="dropdown-divider"></div></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/labs/ssh' routerLinkActive='active'>SSH Server Access</a></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/labs/vpn' routerLinkActive='active'>SIU VPN Access</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/ssh' routerLinkActive='active'>SSH Server Access</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/vpn' routerLinkActive='active'>SIU VPN Access</a></li>
 
                     <li><div class="dropdown-divider"></div><b>Microsoft Tools:</b></li>
                     <li><div class="dropdown-divider"></div></li>
-                    <li role="menuitem"><a class="dropdown-item" routerLink='/microsoft/imagine' routerLinkActive='active'>Microsoft Imagine Downloads</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/microsoft' routerLinkActive='active'>Microsoft Imagine Downloads</a></li>
 
                     <li><div class="dropdown-divider"></div><b>Service Center:</b></li>
                     <li><div class="dropdown-divider"></div></li>

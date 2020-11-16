@@ -33,6 +33,24 @@ import { UserManagementComponent } from './admin/user-management/user-management
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
 import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
+import { WebinfoComponent } from './webinfo/webinfo.component';
+import { WeburlComponent } from './weburl/weburl.component';
+import { DockerComponent } from './docker/docker.component';
+import { GuacamoleLinuxComponent } from './guacamole-linux/guacamole-linux.component';
+import { GuacamoleWindowsComponent } from './guacamole-windows/guacamole-windows.component';
+import { VdiComponent } from './vdi/vdi.component';
+import { VpnComponent } from './vpn/vpn.component';
+import { ResearchlabComponent } from './researchlab/researchlab.component';
+import { PrintjobsComponent } from './printjobs/printjobs.component';
+import { PrintquotaComponent } from './printquota/printquota.component';
+import { PrintsubmitComponent } from './printsubmit/printsubmit.component';
+import { CwpsComponent } from './cwps/cwps.component';
+import { MysqlComponent } from './mysql/mysql.component';
+import { OracleComponent } from './oracle/oracle.component';
+import { NosqlComponent } from './nosql/nosql.component';
+import { SshComponent } from './ssh/ssh.component';
+import { MicrosoftComponent } from './microsoft/microsoft.component';
+import { HelpComponent } from './help/help.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +76,25 @@ import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.c
     UserManagementComponent,
     PhotoManagementComponent,
     RolesModalComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    WebinfoComponent,
+    WeburlComponent,
+    DockerComponent,
+    GuacamoleLinuxComponent,
+    GuacamoleWindowsComponent,
+    VdiComponent,
+    VpnComponent,
+    ResearchlabComponent,
+    PrintjobsComponent,
+    PrintquotaComponent,
+    PrintsubmitComponent,
+    CwpsComponent,
+    MysqlComponent,
+    OracleComponent,
+    NosqlComponent,
+    SshComponent,
+    MicrosoftComponent,
+    HelpComponent
   ],
   imports: [
     BrowserModule,
