@@ -5,8 +5,8 @@
             aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button> -->
-
-        <div class="navbar mr-auto">
+        
+        <div class="navbar mr-auto" *ngIf="(accountService.currentUser$ | async) as user">
             <div class="btn-group" dropdown>
                 <!-- <button id="button-menu-dividers" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-menu-dividers"> -->
                 <button id="button-animated" dropdownToggle type="button" class="btn btn-primary btn-animated dropdown-toggle" aria-controls="dropdown-animated">
@@ -99,7 +99,7 @@
         </div>
 
 
-        <div class="navbar mr-left">
+        <div class="navbar mr-left" *appHasRole='["Admin", "Moderator"]'>
             <div class="btn-group" dropdown>
                 <!-- <button id="button-menu-dividers" dropdownToggle type="button" class="btn btn-primary" aria-controls="dropdown-menu-dividers"> -->
                 <button id="button-animated" dropdownToggle type="button" class="btn btn-primary btn-animated dropdown-toggle" aria-controls="dropdown-animated">

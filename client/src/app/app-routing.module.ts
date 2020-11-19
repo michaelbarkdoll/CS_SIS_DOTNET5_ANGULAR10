@@ -48,7 +48,7 @@ const routes: Routes = [
       {path: 'lists', component: ListsComponent},
       {path: 'messages', component: MessagesComponent},
       {path: 'webinfo', component: WebinfoComponent},
-      {path: 'weburl', component: WeburlComponent},
+      {path: 'weburl', component: WeburlComponent, canDeactivate: [PreventUnsavedChangesGuard]},
       {path: 'docker', component: DockerComponent},
       {path: 'guacamole-linux', component: GuacamoleLinuxComponent},
       {path: 'guacamole-windows', component: GuacamoleWindowsComponent},

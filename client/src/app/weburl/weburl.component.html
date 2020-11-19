@@ -1,1 +1,80 @@
-<p>weburl works!</p>
+<!-- {{member.username | uppercase}} -->
+<div class="row" *ngIf="member">
+
+    <div class="col-4">
+        <h1></h1>
+    </div>
+
+    <div class="col-8">
+        <div class="alert alert-info" *ngIf="editForm.dirty">
+            <strong>Information:</strong> You have made changes.  Any unsubmitted requests will be lost.
+        </div>
+    </div>
+    
+    <div class="col-4">
+        <div class="card">
+            <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.knownAs}}"
+                class="card-img-top img-thumbnail">
+            <div class="card-body">
+                <div>
+                    <strong>Location:</strong>
+                    <p>{{member.city || 'Carbondale'}}, {{member.country || 'Illinois'}}</p>
+                </div>
+                <div *ngIf="member.personalURL">
+                    <strong>Personal Website:</strong>
+                    <p>https://www2.cs.siu.edu/~{{member.personalURL || 'None'}}</p>
+                </div>
+                <div>
+                    <strong>Last Active:</strong>
+                    <p>{{member.lastActive | timeago}}</p>
+                </div>
+                <div>
+                    <strong>Member since:</strong>
+                    <p>{{member.created | date: 'longDate'}}</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button [disabled]="!(editForm.dirty)" form="editForm" type="submit"
+                    class="btn btn-success btn-block">Submit Request</button>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div class="col-8">
+
+        
+        <tabset class="member-tabset">
+            <tab heading='Personal Website:'>
+
+
+                <form #editForm="ngForm" id="editForm" (ngSubmit)="updateMember()">
+                    
+                    <p>Personal web url is initially generated based upon your <i style="color:red">[Firstinitial Middleinitial Lastname]</i>.</p>
+
+                    <h4>Website url:</h4>
+
+                    <p>
+                        <a *ngIf="member.personalURL" href="https://www2.cs.siu.edu/~{{member.personalURL}}" target="_blank">https://www2.cs.siu.edu/~{{member.personalURL}}</a>
+                    </p>
+                    
+                    <!-- <p *ngIf="member.personalURL">https://www2.cs.siu.edu/~{{member.personalURL || "void"}}</p> -->
+                    <p *ngIf="!member.personalURL">Please request one below.</p>
+
+                    <h4>Request Changes:</h4>
+                    <p>Any modifications to the following field are subject to approval.</p>
+
+                    <div class="form-inline">
+                        <label for="weburl">Website url https://www2.cs.siu.edu/~</label>
+                        <input [(ngModel)]="member.personalURL" name="weburl" type="weburl" class="form-control mx-2">
+                    </div>
+                   
+                </form>
+            </tab>
+            <tab heading='Website Policy'>
+                <p>You agree to the following...</p>
+            </tab>
+        </tabset>
+    </div>
+</div>

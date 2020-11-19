@@ -17,7 +17,7 @@ namespace API.Services
             this.sshServer = new sshSettings(config.Value.Hostname, config.Value.Port);
         }
 
-        public async Task<bool> AuthenticateUserAsync(string username, string password) {
+        public async Task<bool> AuthenticateUserAsync(string username, string password) {         
             this.client = this.setupConnection(sshServer.Hostname, sshServer.Port, username, password);
 
             var retCode = await this.RunCommandAsync("id");

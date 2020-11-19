@@ -1,1 +1,61 @@
-<p>webinfo works!</p>
+<!-- {{member.username | uppercase}} -->
+<div class="row" *ngIf="member">
+
+    <div class="col-4">
+        <div class="card">
+            <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.knownAs}}"
+                class="card-img-top img-thumbnail">
+            <div class="card-body">
+                <div>
+                    <strong>Location:</strong>
+                    <p>{{member.city || 'Carbondale'}}, {{member.country || 'Illinois'}}</p>
+                </div>
+                <div *ngIf="member.personalURL">
+                    <strong>Personal Website:</strong>
+                    <p>https://www2.cs.siu.edu/~{{member.personalURL || 'None'}}</p>
+                </div>
+                <div>
+                    <strong>Last Active:</strong>
+                    <p>{{member.lastActive | timeago}}</p>
+                </div>
+                <div>
+                    <strong>Member since:</strong>
+                    <p>{{member.created | date: 'longDate'}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-8">
+       
+        <tabset class="member-tabset">
+            <tab heading='Personal Website:'>
+   
+                    <p></p>
+                    <h4>Website url:</h4>
+                    <p>
+                        <a *ngIf="member.personalURL" href="https://www2.cs.siu.edu/~{{member.personalURL}}" target="_blank">https://www2.cs.siu.edu/~{{member.personalURL}}</a>
+                    </p>
+                                        
+                    <!-- <p *ngIf="member.personalURL">https://www2.cs.siu.edu/~{{member.personalURL || "void"}}</p> -->
+
+                    <p *ngIf="!member.personalURL">You currently don't have a web url.</p>
+                    <p *ngIf="!member.personalURL">Request one <a routerLink="/weburl" routerLinkActive="active">here</a>.</p>
+
+                    <p>Personal web url is initially generated based upon your <i style="color:red">[Firstinitial Middleinitial Lastname]</i>.</p>
+                    
+            </tab>
+            <tab heading='Website Policy'>
+                <p>You agree to the following...</p>
+            </tab>
+            <!-- <tab heading='Edit Photos'>
+            <app-photo-editor [member]="member"></app-photo-editor>
+        </tab> -->
+        </tabset>
+
+        <!-- [hidden]="!(editForm.dirty)" -->
+        <!-- <div class="col-4">
+            <button [disabled]="!(editForm.dirty)" form="editForm" type="submit" class="btn btn-success btn-block">Request Changes</button>            
+        </div> -->
+    </div>
+</div>
