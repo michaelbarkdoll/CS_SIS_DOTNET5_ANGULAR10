@@ -1,0 +1,39 @@
+<div class="row">
+    <h4>Web Admin Center</h4>
+</div>
+
+<div class="text-center mt-3">
+    <h2>Total url web requests - {{pagination?.totalItems}} found</h2>
+</div>
+
+<div *ngIf="members" class="row mt-3">
+    <h5>Member(s) with requested url changes:</h5>
+
+    
+    
+
+    <table class="table mt-3">
+        <tr text-align="left">
+            <!-- <th style="width: 15%">Id</th> -->
+            <th style="width: 15%">Username</th>
+            <th style="width: 15%">Current URL</th>
+            <th style="width: 15%">Requested URL</th>
+            <th style="width: 15%">Approve Request</th>
+            <th style="width: 15%">Deny Request</th>
+        </tr>
+        <tr *ngFor="let member of members">
+            <td>{{member.username}} </td>
+            <td>https://www2.cs.siu.edu/~{{member.personalURL}}</td>
+            <td>https://www2.cs.siu.edu/~{{member.requestedURL}}</td>
+            <td style="text-align:center"><button type="button" class="btn btn-primary"  (click)="approve(member)">Approve</button></td>
+            <td style="text-align:center"><button type="button" class="btn btn-secondary" (click)="deny(member)">Deny</button></td>
+        </tr>
+    </table>
+</div>
+
+<div class="d-flex justify-content-center" *ngIf="pagination">
+    <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage"
+        [(ngModel)]="pagination.currentPage" (pageChanged)="pageChanged($event)" previousText="&lsaquo;"
+        nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+    </pagination>
+</div>

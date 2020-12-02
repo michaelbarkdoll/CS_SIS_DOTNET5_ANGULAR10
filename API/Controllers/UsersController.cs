@@ -24,21 +24,21 @@ namespace API.Controllers
     [Authorize]
     public class UsersController : BaseApiController
     {
-        // private readonly DataContext _context;
+        private readonly DataContext _context;
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly IPhotoService photoService;
         private readonly IFileRepoService fileRepoService;
 
         //public UsersController(DataContext context)
-        public UsersController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService, IFileRepoService fileRepoService)
+        public UsersController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService, IFileRepoService fileRepoService, DataContext context)
         //public UsersController(IunitOfWork.UserRepository unitOfWork.UserRepository, IMapper mapper, IPhotoService photoService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.photoService = photoService;
             this.fileRepoService = fileRepoService;
-            //this._context = context;
+            this._context = context;
         }
 
         // api/users
@@ -126,6 +126,46 @@ namespace API.Controllers
                 return NoContent();
             
             return BadRequest("Failed to update user.");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("update-url")]
+        public async Task<ActionResult> UpdateUserURLRequest(MemberUpdateUrlDto memberUpdateDto)
+        {
+            // Get username From token (can't trust client)
+            //var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // var username = User.GetUsername();
+            var username = memberUpdateDto.Username;
+
+            var user = await this.unitOfWork.UserRepository.GetUserByUsernameAsync(username); 
+
+            // Use Automapper to make from memberUpdateDto to AppUser
+            this.mapper.Map(memberUpdateDto, user);
+
+            this.unitOfWork.UserRepository.Update(user);
+
+            if(await this.unitOfWork.Complete())
+                return NoContent();
+            
+            return BadRequest("Failed to update user.");
+        }
+
+        // api/users/url-requests
+        [Authorize(Roles = "Admin")]
+        [HttpGet("url-requests")]
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersURLRequests([FromQuery]UserParams userParams) 
+        {
+            userParams.CurrentUserName = User.GetUsername();    // From Token
+
+            var users = await this.unitOfWork.UserRepository.GetMembersURLRequestsAsync(userParams);
+            // var users = await this.unitOfWork.UserRepository.GetMembersAsync(userParams);
+
+            Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
+
+            return Ok(users);
+
+            //return users;
+            //return await _context.Users.ToListAsync();
         }
 
         [HttpPost("add-photo")]

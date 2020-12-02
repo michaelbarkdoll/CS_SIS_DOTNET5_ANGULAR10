@@ -19,6 +19,7 @@ import { MicrosoftComponent } from './microsoft/microsoft.component';
 import { MysqlComponent } from './mysql/mysql.component';
 import { NosqlComponent } from './nosql/nosql.component';
 import { OracleComponent } from './oracle/oracle.component';
+import { PrinterAdminViewComponent } from './printer/printer-admin-view/printer-admin-view.component';
 import { PrintjobsComponent } from './printjobs/printjobs.component';
 import { PrintquotaComponent } from './printquota/printquota.component';
 import { PrintsubmitComponent } from './printsubmit/printsubmit.component';
@@ -26,6 +27,7 @@ import { ResearchlabComponent } from './researchlab/researchlab.component';
 import { SshComponent } from './ssh/ssh.component';
 import { VdiComponent } from './vdi/vdi.component';
 import { VpnComponent } from './vpn/vpn.component';
+import { WebadminComponent } from './webadmin/webadmin.component';
 import { WebinfoComponent } from './webinfo/webinfo.component';
 import { WeburlComponent } from './weburl/weburl.component';
 import { AdminGuard } from './_guards/admin.guard';
@@ -49,6 +51,7 @@ const routes: Routes = [
       {path: 'messages', component: MessagesComponent},
       {path: 'webinfo', component: WebinfoComponent},
       {path: 'weburl', component: WeburlComponent, canDeactivate: [PreventUnsavedChangesGuard]},
+      {path: 'webadmin', component: WebadminComponent, canActivate: [AdminGuard]},
       {path: 'docker', component: DockerComponent},
       {path: 'guacamole-linux', component: GuacamoleLinuxComponent},
       {path: 'guacamole-windows', component: GuacamoleWindowsComponent},
@@ -58,6 +61,8 @@ const routes: Routes = [
       {path: 'printjobs', component: PrintjobsComponent},
       {path: 'printquota', component: PrintquotaComponent},
       {path: 'printsubmit', component: PrintsubmitComponent},
+      {path: 'printer/admin', component: PrinterAdminViewComponent},
+      // {path: 'printer/admin', component: PrinterAdminViewComponent, canActivate: [AdminGuard]},
       {path: 'cwps', component: CwpsComponent},
       {path: 'mysql', component: MysqlComponent},
       {path: 'oracle', component: OracleComponent},

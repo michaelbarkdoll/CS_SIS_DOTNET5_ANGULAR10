@@ -1,0 +1,224 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarColor03">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Features</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Pricing</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+        <li class="nav-item dropdown">
+            <!-- <a class="nav-link" href="#">About2</a> -->
+            <a id="dropdown-animated" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="menu" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+        </li>
+        
+        <ng-container id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-animated">
+            <li><div class="dropdown-item"></div><b>Website Development:</b></li>
+            <li><div class="dropdown-divider"></div></li>
+            <li role="menuitem"><a class="dropdown-item" routerLink='/webinfo' routerLinkActive='active'>My Website Info</a></li>
+            <li role="menuitem"><a class="dropdown-item" routerLink='/weburl' routerLinkActive='active'>Customize Website URL</a></li>
+            <li><div class="dropdown-divider"></div><b>Microservice Management:</b></li>
+            <li><div class="dropdown-divider"></div></li>
+            <li role="menuitem"><a class="dropdown-item" routerLink='/docker' routerLinkActive='active'>Docker Containers</a></li>
+        </ng-container>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Separated link</a>
+          </div>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search">
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+
+
+<!-- 
+<nav class="navbar navbar-expand-lg navbar-light fixed-top bg-light">
+    
+    
+    <div class="container">
+        <a class="navbar-brand" routerLink='/' routerLinkActive='active'>SIU</a>
+
+        
+
+
+
+
+
+        
+        <div class="navbar mr-auto" *ngIf="(accountService.currentUser$ | async) as user">
+            <div class="btn-group" dropdown>
+
+                <button id="button-animated" dropdownToggle type="button" class="btn btn-primary btn-animated dropdown-toggle" aria-controls="dropdown-animated">
+                    Web Services
+                    <span class="caret"></span>
+                </button>
+                <button id="button-animated" dropdownToggle type="button" class="dropdown-toggle" aria-controls="dropdown-animated">
+                    Web Services
+                    <span class="caret"></span>
+                </button>
+                <button id="button-animated" dropdownToggle type="button" class="btn btn-secondary btn-animated dropdown-toggle" aria-controls="dropdown-animated">
+                    Web Services
+                    <span class="caret"></span>
+                </button>
+
+                <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-animated">
+                    <li><div class="dropdown-item"></div><b>Website Development:</b></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/webinfo' routerLinkActive='active'>My Website Info</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/weburl' routerLinkActive='active'>Customize Website URL</a></li>
+                    <li><div class="dropdown-divider"></div><b>Microservice Management:</b></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/docker' routerLinkActive='active'>Docker Containers</a></li>
+                </ul>
+            </div>
+
+            <div class="btn-group" dropdown>
+
+                <button id="button-animated" dropdownToggle type="button" class="btn btn-primary btn-animated dropdown-toggle" aria-controls="dropdown-animated">
+                    Online Labs
+                    <span class="caret"></span>
+                </button>
+
+                <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-animated">
+                    <li><div class="dropdown-item"></div><b>Online Computer Labs:</b></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/guacamole-linux' routerLinkActive='active'>Access Linux Labs</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/vdi' routerLinkActive='active'>Access Windows Labs</a></li>
+                    <li><div class="dropdown-divider"></div><b>Request Personalized Access:</b></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/researchlab' routerLinkActive='active'>Research Lab Remote Access</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/vpn' routerLinkActive='active'>SIU VPN Access</a></li>
+                </ul>
+            </div>
+
+            <div class="btn-group" dropdown>
+
+                <button id="button-animated" dropdownToggle type="button" class="btn btn-primary btn-animated dropdown-toggle" aria-controls="dropdown-animated">
+                    Print Services
+                    <span class="caret"></span>
+                </button>
+
+                <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-animated">
+                    <li><div class="dropdown-item"></div><b>Academic Program:</b></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/printjobs' routerLinkActive='active'>My Print Jobs</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/printquota' routerLinkActive='active'>My Print Quota</a></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/printsubmit' routerLinkActive='active'>Submit a Print Job</a></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li *appHasRole='["Admin", "Moderator"]' 
+                        role="menuitem"><a class="dropdown-item" routerLink='/printer/admin' routerLinkActive='active'>Printer Admin Center</a></li>
+                    <li *appHasRole='["Admin", "Moderator"]' class="divider dropdown-divider"></li>
+                    <li><div class="dropdown-item"></div><b>Campus Printing:</b></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/cwps' routerLinkActive='active'>Campus-Wide Print Services</a></li>
+                </ul>
+            </div>
+
+            
+
+            <div class="btn-group" dropdown>
+
+                <button id="button-animated" dropdownToggle type="button" class="btn btn-primary btn-animated dropdown-toggle" aria-controls="dropdown-animated">
+                    Resources
+                    <span class="caret"></span>
+                </button>
+
+                <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-animated">
+                    <li><div class="dropdown-item"></div><b>Database Access:</b></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/mysql' routerLinkActive='active'>MySQL Access</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/oracle' routerLinkActive='active'>Oracle Access</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/nosql' routerLinkActive='active'>NoSQL Access</a></li>
+
+                    <li><div class="dropdown-divider"></div><b>Public SSH Access:</b></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/ssh' routerLinkActive='active'>SSH Server Access</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/vpn' routerLinkActive='active'>SIU VPN Access</a></li>
+
+                    <li><div class="dropdown-divider"></div><b>Microsoft Tools:</b></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/microsoft' routerLinkActive='active'>Microsoft Imagine Downloads</a></li>
+
+                    <li><div class="dropdown-divider"></div><b>Service Center:</b></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/help' routerLinkActive='active'>Get Help</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+
+        <div class="navbar mr-left" *appHasRole='["Admin", "Moderator"]'>
+            <div class="btn-group" dropdown>
+                <button id="button-animated" dropdownToggle type="button" class="btn btn-primary btn-animated dropdown-toggle" aria-controls="dropdown-animated">
+                    Dating
+                    <span class="caret"></span>
+                </button>
+                <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-animated">
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/members' routerLinkActive='active'>Matches</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/lists' routerLinkActive='active'>List</a></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/messages' routerLinkActive='active'>Messages</a></li>
+                    <li *appHasRole='["Admin", "Moderator"]' 
+                        role="menuitem"><a class="dropdown-item" routerLink='/admin' routerLinkActive='active'>Admin</a></li>
+                    <li class="divider dropdown-divider"></li>
+                    <li role="menuitem"><a class="dropdown-item" routerLink='/errors' routerLinkActive='active'>Errors</a></li>
+                </ul>
+            </div>
+        </div>
+
+        
+
+        <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
+            <img src="{{user.photoUrl || './assets/user.png'}}" alt="{{user.username}}">
+            <a class="dropdown-toggle text-dark ml-2" dropdownToggle>Welcome {{user.knownAs || user.username | titlecase}}</a>
+            <div class="dropdown-menu mt-3" *dropdownMenu>
+                <a class="dropdown-item" routerLink='/member/edit'>Edit Profile</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" (click)="logout()">Logout</a>
+            </div>
+        </div>
+
+
+        <form *ngIf="(accountService.currentUser$ | async) === null" #loginForm="ngForm" class="form-inline mt-2 mt-md-0" (ngSubmit)="login()"
+         autocomplete="off">
+            <input 
+                name="username"
+                [(ngModel)]="model.username"   
+                class="form-control mr-sm-2" 
+                type="text" 
+                placeholder="Username">
+            <input 
+                name="password"
+                [(ngModel)]="model.password"
+                class="form-control mr-sm-2" 
+                type="password" 
+                placeholder="Password">
+            <button class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
+        </form>
+    </div>
+
+</nav> -->

@@ -15,6 +15,7 @@ namespace API.Data
         }
 
         public IUserRepository UserRepository => new UserRepository(context, mapper);
+        public IPrinterRepository PrinterRepository => new PrinterRepository(context, mapper);
 
         public IMessageRepository MessageRepository => new MessageRepository(context, mapper);
 

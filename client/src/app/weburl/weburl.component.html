@@ -20,9 +20,11 @@
                     <strong>Location:</strong>
                     <p>{{member.city || 'Carbondale'}}, {{member.country || 'Illinois'}}</p>
                 </div>
-                <div *ngIf="member.personalURL">
+                <!-- <div *ngIf="member.personalURL"> -->
+                <div *ngIf="this.oldUrl">
                     <strong>Personal Website:</strong>
-                    <p>https://www2.cs.siu.edu/~{{member.personalURL || 'None'}}</p>
+                    <!-- <p>https://www2.cs.siu.edu/~{{member.personalURL || 'None'}}</p> -->
+                    <p>https://www2.cs.siu.edu/~{{this.oldUrl || 'None'}}</p>
                 </div>
                 <div>
                     <strong>Last Active:</strong>
@@ -56,18 +58,31 @@
                     <h4>Website url:</h4>
 
                     <p>
-                        <a *ngIf="member.personalURL" href="https://www2.cs.siu.edu/~{{member.personalURL}}" target="_blank">https://www2.cs.siu.edu/~{{member.personalURL}}</a>
+                        <!-- <a *ngIf="member.personalURL" href="https://www2.cs.siu.edu/~{{member.personalURL}}" target="_blank">https://www2.cs.siu.edu/~{{member.personalURL}}</a> -->
+                        <a *ngIf="this.oldUrl" href="https://www2.cs.siu.edu/~{{this.oldUrl}}" target="_blank">https://www2.cs.siu.edu/~{{this.oldUrl}}</a>
                     </p>
                     
                     <!-- <p *ngIf="member.personalURL">https://www2.cs.siu.edu/~{{member.personalURL || "void"}}</p> -->
                     <p *ngIf="!member.personalURL">Please request one below.</p>
+
+                    <!-- <div *ngIf="this.oldRequestedURL" class="text-center mt-3">
+                        <h2>requestUrl found</h2>
+                    </div> -->
+
+                    <div class="alert alert-warning" *ngIf="this.oldRequestedURL">
+                        <strong>Notice:</strong><br><br>
+                        You still have a request awaiting approval for:<br>
+                        https://www2.cs.siu.edu/~{{this.oldRequestedURL}}
+                    </div>
+
 
                     <h4>Request Changes:</h4>
                     <p>Any modifications to the following field are subject to approval.</p>
 
                     <div class="form-inline">
                         <label for="weburl">Website url https://www2.cs.siu.edu/~</label>
-                        <input [(ngModel)]="member.personalURL" name="weburl" type="weburl" class="form-control mx-2">
+                        <input [(ngModel)]="member.requestedURL" name="weburl" type="weburl" class="form-control mx-2">
+                        <!-- <input [(ngModel)]="member.personalURL" name="weburl" type="weburl" class="form-control mx-2"> -->
                     </div>
                    
                 </form>

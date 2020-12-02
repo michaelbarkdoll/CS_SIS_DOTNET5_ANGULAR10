@@ -1,1 +1,82 @@
-<p>printjobs works!</p>
+<div class="text-center mt-3">
+    <h2>Your print jobs - {{pagination?.totalItems}} found</h2>
+</div>
+<!-- id - jobName - jobNumber - jobOwner - jobStatus - numberOfPages - pagesPrinted - printerName -->
+
+<div class="container mt-3">
+    <form #form="ngForm" class="form-inline mb-3" (ngSubmit)="loadPrintJobs()" autocomplete="off">
+        <div class="form-group">
+            <label>Jobs Per Page:</label>
+            <input type="number" class="form-contorl ml-1" style="width: 70px;" name="minAge" [(ngModel)]="userParams.printJobPageSize">
+        </div>
+        <!-- <div class="form-group px-2">
+            <label>Age to:</label>
+            <input type="number" class="form-contorl ml-1" style="width: 70px;" name="maxAge" [(ngModel)]="userParams.maxAge">
+        </div> -->
+        <!-- <div class="form-group px-2">
+            <label>Show: </label>
+            <select name="gender" style="width: 130px" [(ngModel)]="userParams.gender" class="form-control ml-1">
+                <option *ngFor="let gender of genderList" [value]="gender.value">
+                    {{gender.display}}
+                </option>
+            </select>
+        </div> -->
+
+        <div class="form-group px-2">
+            <label>Show print jobs with status: </label>
+            <select name="printStatus" style="width: 130px" [(ngModel)]="userParams.printStatus" class="form-control ml-1">
+                <option *ngFor="let printStatus of printStatusList" [value]="printStatus.value">
+                    {{printStatus.display}}
+                </option>
+            </select>
+        </div>
+
+        <div class="col">
+            <button class="btn btn-primary ml-1 float-right" type="submit">Apply Filters</button>
+            <button (click)="resetFilters()" class="btn btn-info ml-1 float-right" type="submit">Reset Filters</button>
+        </div>
+        
+        
+        
+    </form>
+</div>
+
+<div *ngIf="printJobs" class="row">
+    <table class="table">
+        <tr text-align="left">
+            <th style="width: 15%">Id</th>
+            <th style="width: 15%">jobNumber</th>
+            <th style="width: 15%">jobName</th>
+            <th style="width: 20%">jobOwner</th>
+            <th style="width: 5%">Pages</th>
+            <th style="width: 5%">Printed</th>
+            <th style="width: 10%;">printerName</th>
+            <th style="width: 15%">jobStatus</th>
+            
+        </tr>
+        <tr *ngFor="let printJob of printJobs">
+            <td>{{ printJob.id }}</td>
+            <td>{{ printJob.jobNumber }}</td>
+            <td>{{ printJob.jobName }}</td>
+            <td>{{ printJob.jobOwner }}</td>
+            <td>{{ printJob.numberOfPages }}</td>
+            <td>{{ printJob.pagesPrinted }}</td>
+            <td>{{ printJob.printerName }}</td>
+            <td>{{ printJob.jobStatus }}</td>
+        </tr>
+    </table>
+</div>
+
+<div class="d-flex justify-content-center" *ngIf="pagination">
+    <pagination 
+        [boundaryLinks]="true" 
+        [totalItems]="pagination.totalItems"
+        [itemsPerPage]="pagination.itemsPerPage"
+        [(ngModel)]="pagination.currentPage"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;" 
+        nextText="&rsaquo;" 
+        firstText="&laquo;" 
+        lastText="&raquo;"> 
+    </pagination>
+</div>

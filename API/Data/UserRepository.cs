@@ -43,7 +43,7 @@ namespace API.Data
         public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
             var query = context.Users.AsQueryable();
-                
+                            
             // Filter first
             query = query.Where(u => u.UserName != userParams.CurrentUserName);
             query = query.Where(u => u.Gender == userParams.Gender);
@@ -71,6 +71,37 @@ namespace API.Data
 
             //throw new System.NotImplementedException();
         }
+
+        public async Task<PagedList<MemberDto>> GetMembersURLRequestsAsync(UserParams userParams)
+        {
+            var query = context.Users.AsQueryable();
+                            
+            // Filter first
+            // query = query.Where(u => (u.RequestedURL != null) || (u.RequestedURL.ToString() != "") );
+            // query = query.Where(u => u.RequestedURL != null);
+            query = query.Where(u => !string.IsNullOrEmpty(u.RequestedURL));
+            
+
+            query = userParams.OrderBy switch // New C# 8 switch expressions, no need for breaks 
+            {
+                "created" => query.OrderByDescending(u => u.Created),   // created case
+                _ => query.OrderByDescending(u => u.LastActive)     // Default case
+            };
+
+            // Project Automap to MemberDto
+            return await PagedList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(mapper
+                .ConfigurationProvider).AsNoTracking(), 
+                    userParams.PageNumber, userParams.PageSize);
+        }
+
+        public async Task<IEnumerable<PrinterDto>> GetPrintersAsync()
+        {
+            var query = context.Printers.AsQueryable();
+            
+            return await context.Printers
+                 .ProjectTo<PrinterDto>(mapper.ConfigurationProvider)
+                 .ToListAsync();  // This is where we exec database query
+        }
         
         // public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
         // {
@@ -86,9 +117,25 @@ namespace API.Data
             return await context.Users.FindAsync(id);
         }
 
+        public async Task<AppUser> GetUserByIdPrintJobAsync(int id)
+        {
+            return await context.Users
+                .Include(p => p.Photos)
+                .Include(p => p.PrintJobs)
+                .SingleOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
             return await context.Users
+                .Include(p => p.Photos)     // Eager loading
+                .SingleOrDefaultAsync(x => x.UserName == username);
+        }
+
+        public async Task<AppUser> GetUserByUsernamePrintJobAsync(string username)
+        {
+            return await context.Users
+                .Include(p => p.PrintJobs)
                 .Include(p => p.Photos)     // Eager loading
                 .SingleOrDefaultAsync(x => x.UserName == username);
         }
@@ -123,6 +170,7 @@ namespace API.Data
 
             return await context.Users
                 .Where(x => x.UserName == username)
+                .Include(f => f.UserFiles)
                 .ProjectTo<MemberFileDto>(mapper.ConfigurationProvider) // Use automapper
                 //.ProjectTo<MemberDto>(mapper.ConfigurationProvider) // Use automapper
                 .SingleOrDefaultAsync();  // This is where we exec database query
@@ -134,6 +182,17 @@ namespace API.Data
             return await this.context.Users
                 .Where(x => x.UserName == username)
                 .Select(x => x.Gender).FirstOrDefaultAsync();
+        }
+
+        public async Task<MemberPrintJobDto> GetMemberPrintJobsAsync(string username)
+        {
+            return await context.Users
+                .Where(x => x.UserName == username)
+                .Include(p => p.PrintJobs)
+                .Include(p => p.Photos)
+                .ProjectTo<MemberPrintJobDto>(mapper.ConfigurationProvider) // Use automapper
+                .SingleOrDefaultAsync();  // This is where we exec database query
+            // throw new NotImplementedException();
         }
     }
 }

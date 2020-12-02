@@ -5,6 +5,8 @@ import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
 import { PaginatedResult, Pagination } from '../_models/pagination';
+import { Printers } from '../_models/printer';
+import { PrintJob } from '../_models/printjob';
 import { User } from '../_models/user';
 import { UserParams } from '../_models/userParams';
 import { AccountService } from './account.service';
@@ -23,6 +25,9 @@ export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = [];
   memberCache = new Map();
+  printerCache = new Map();
+  printerUsersCache = new Map();
+  printersCache = new Map();
   user: User;
   userParams: UserParams;
 
@@ -100,6 +105,39 @@ export class MembersService {
     
   }
 
+  getMembersURLRequests(userParams: UserParams) {
+
+    // console.log(Object.values(userParams).join('-'));
+    var response = this.memberCache.get(Object.values(userParams).join('-'));
+    // if(response) {
+    //   return of(response);
+    // }
+
+    let params = this.getPaginationHeaders(userParams.pageNumber, userParams.urlRequestsPageSize);
+
+    // params = params.append('minAge', userParams.minAge.toString());
+    // params = params.append('maxAge', userParams.maxAge.toString());
+    // params = params.append('Gender', userParams.gender);
+    // params = params.append('orderBy', userParams.orderBy);
+    
+
+    // Previous get method would get body.  Now that we're passing up the params we'll get the full response back and we need to look into the body to get the body.
+    //return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params)
+    
+    // return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params)
+    //   .pipe(map(response => {
+    //     this.memberCache.set(Object.values(userParams).join('-'), response);
+    //     return response;
+    //   }))
+
+    return getPaginatedResult<Member[]>(this.baseUrl + 'users/url-requests', params, this.http)
+      .pipe(map(response => {
+        this.memberCache.set(Object.values(userParams).join('-'), response);
+        return response;
+      }))
+    
+  }
+
   getMember(username: string) {
     // console.log(this.memberCache);
     // ... spread operator
@@ -136,9 +174,186 @@ export class MembersService {
   }
 */
 
+getMemberPrintJobs(username: string) {
+  // console.log(this.memberCache);
+  // ... spread operator
+  //const member = [...this.memberCache.values()];
+  //console.log(member);
+  
+  const member = [...this.memberCache.values()]
+    .reduce((arr, elem) => arr.concat(elem.result), [])
+    .find((member: Member) => member.username === username);
+
+  if(member) {
+    return of(member);
+  }
+
+
+  
+  // console.log(member);
+
+  // Make the API call if we don't have the member
+  // return this.http.get<Member>(this.baseUrl + 'users/get-user-printjobs/' + username);
+  return this.http.get<Member>(this.baseUrl + 'printer/get-user-printjobs/' + username);
+}
+
+
+//getMembers(page?: number, itemsPerPage?: number) {
+  getMemberPaginatedPrintJobs(userParams: UserParams) {
+
+    // console.log(Object.values(userParams).join('-'));
+    var response = this.printerCache.get(Object.values(userParams).join('-'));
+    if(response) {
+      return of(response);
+    }
+
+    let params = this.getPaginationHeaders(userParams.printJobPageNumber, userParams.printJobPageSize);
+
+    params = params.append('printStatus', userParams.printStatus.toString());
+    // params = params.append('minAge', userParams.minAge.toString());
+    // params = params.append('maxAge', userParams.maxAge.toString());
+    // params = params.append('Gender', userParams.gender);
+    // params = params.append('orderBy', userParams.orderBy);
+    
+
+    // Previous get method would get body.  Now that we're passing up the params we'll get the full response back and we need to look into the body to get the body.
+    //return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params)
+    
+    // return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params)
+    //   .pipe(map(response => {
+    //     this.memberCache.set(Object.values(userParams).join('-'), response);
+    //     return response;
+    //   }))
+
+    // return getPaginatedResult<Member[]>(this.baseUrl + 'printer/get-user-paged-printjobs/admin', params, this.http)
+    // return getPaginatedResult<PrintJob[]>(this.baseUrl + 'printer/get-user-paged-printjobs/admin', params, this.http)
+    return getPaginatedResult<PrintJob[]>(this.baseUrl + 'printer/get-user-paged-printjobs', params, this.http)
+      .pipe(map(response => {
+        this.printerCache.set(Object.values(userParams).join('-'), response);
+        return response;
+      }))
+    
+  }
+
+getMembersPaginatedPrintJobs(userParams: UserParams) {
+
+  // console.log(Object.values(userParams).join('-'));
+
+  // Disabled cache..
+  // var response = this.printerUsersCache.get(Object.values(userParams).join('-'));
+  // if(response) {
+  //   return of(response);
+  // }
+
+  let params = this.getPaginationHeaders(userParams.printJobPageNumber, userParams.printJobPageSize);
+
+  params = params.append('printStatus', userParams.printStatus.toString());
+  params = params.append('searchUser', userParams.searchUser.toString());
+  params = params.append('searchPrinter', userParams.searchPrinter.toString());
+  // params = params.append('minAge', userParams.minAge.toString());
+  // params = params.append('maxAge', userParams.maxAge.toString());
+  // params = params.append('Gender', userParams.gender);
+  // params = params.append('orderBy', userParams.orderBy);
+  
+
+  // Previous get method would get body.  Now that we're passing up the params we'll get the full response back and we need to look into the body to get the body.
+  //return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params)
+  
+  // return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params)
+  //   .pipe(map(response => {
+  //     this.memberCache.set(Object.values(userParams).join('-'), response);
+  //     return response;
+  //   }))
+
+  // return getPaginatedResult<Member[]>(this.baseUrl + 'printer/get-user-paged-printjobs/admin', params, this.http)
+  // return getPaginatedResult<PrintJob[]>(this.baseUrl + 'printer/get-user-paged-printjobs/admin', params, this.http)
+  return getPaginatedResult<PrintJob[]>(this.baseUrl + 'printer/get-users-paged-printjobs', params, this.http)
+    .pipe(map(response => {
+      this.printerUsersCache.set(Object.values(userParams).join('-'), response);
+      return response;
+    }))
+  
+}
+
+getPaginatedPrinters(userParams: UserParams) {
+
+  let params = this.getPaginationHeaders(userParams.printerPageNumber, userParams.printerPageSize);
+
+  return getPaginatedResult<Printers[]>(this.baseUrl + 'printer/get-paged-printers', params, this.http)
+    .pipe(map(response => {
+      this.printersCache.set(Object.values(userParams).join('-'), response);
+      return response;
+    }))
+  
+}
+
+getMemberPrintQuota() {
+  // getMemberPrinters() {
+  // console.log(this.memberCache);
+  // ... spread operator
+  //const member = [...this.memberCache.values()];
+  //console.log(member);
+  
+  // const member = [...this.memberCache.values()]
+  //   .reduce((arr, elem) => arr.concat(elem.result), [])
+  //   .find((member: Member) => member.username === username);
+
+  // if(member) {
+  //   return of(member);
+  // }
+  
+  // console.log(member);
+
+  // Make the API call if we don't have the member
+  // return this.http.get<Printers[]>(this.baseUrl + 'users/get-user-printers/' + username);
+  // return this.http.get<Printers[]>(this.baseUrl + 'printer/get-user-printers/' + username);
+  return this.http.get<Member>(this.baseUrl + 'printer/get-user-printquota');
+  // return this.http.get<Printers[]>(this.baseUrl + 'printer/get-printers');
+}
+
+getMemberPrinters() {
+  // getMemberPrinters() {
+  // console.log(this.memberCache);
+  // ... spread operator
+  //const member = [...this.memberCache.values()];
+  //console.log(member);
+  
+  // const member = [...this.memberCache.values()]
+  //   .reduce((arr, elem) => arr.concat(elem.result), [])
+  //   .find((member: Member) => member.username === username);
+
+  // if(member) {
+  //   return of(member);
+  // }
+  
+  // console.log(member);
+
+  // Make the API call if we don't have the member
+  // return this.http.get<Printers[]>(this.baseUrl + 'users/get-user-printers/' + username);
+  // return this.http.get<Printers[]>(this.baseUrl + 'printer/get-user-printers/' + username);
+  return this.http.get<Printers[]>(this.baseUrl + 'printer/get-printers');
+
+  // return getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http)
+  //     .pipe(map(response => {
+  //       this.memberCache.set(Object.values(userParams).join('-'), response);
+  //       return response;
+  //     }))
+}
+
   updateMember(member: Member) {
     //return this.http.put(this.baseUrl + 'users', member);
     return this.http.put(this.baseUrl + 'users', member).pipe(
+      map(() => {
+        const index = this.members.indexOf(member);
+        this.members[index] = member;
+      })
+    )
+  }
+
+  updateMemberURLRequest(member: Member) {
+
+    //return this.http.put(this.baseUrl + 'users', member);
+    return this.http.put(this.baseUrl + 'users/update-url', member).pipe(
       map(() => {
         const index = this.members.indexOf(member);
         this.members[index] = member;
@@ -168,6 +383,37 @@ export class MembersService {
     return getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http);
     //return this.getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params);
     //return this.http.get<Partial<Member[]>>(this.baseUrl + 'likes?predicate=' + predicate); // liked or likedBy
+  }
+
+  setPrintJobHeld(printJobId: number) {
+    return this.http.put(this.baseUrl + 'printer/pause-print-job/' + printJobId, {});
+  }
+
+  setPrintJobQueued(printJobId: number) {
+    return this.http.put(this.baseUrl + 'printer/queue-print-job/' + printJobId, {});
+  }
+
+  setPrintJobCompleted(printJobId: number) {
+    return this.http.put(this.baseUrl + 'printer/complete-print-job/' + printJobId, {});
+  }
+
+  setPrintJobCancel(printJobId: number) {
+    return this.http.put(this.baseUrl + 'printer/cancel-print-job/' + printJobId, {});
+  }
+
+  setPrintJobDelete(printJobId: number) {
+    return this.http.put(this.baseUrl + 'printer/delete-print-job/' + printJobId, {});
+  }
+
+  addPrinter(printer: Printers) {
+    console.log("Inside addPrinter:");
+    console.log(printer);
+    return this.http.post(this.baseUrl + 'printer/add-printer', printer);
+    // return this.http.post(this.baseUrl + 'printer/add-printer/' + printer, {})
+  }
+
+  deletePrinter(printerId: number) {
+    return this.http.delete(this.baseUrl + 'printer/delete-printer/' + printerId, {});
   }
 
   // Previous get method would get body.  Now that we're passing up the params we'll get the full response back and we need to look into the body to get the body.

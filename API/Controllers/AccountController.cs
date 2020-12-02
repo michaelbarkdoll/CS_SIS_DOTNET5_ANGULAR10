@@ -16,7 +16,7 @@ namespace API.Controllers
     public class AccountController : BaseApiController
     {
         //private readonly DataContext context;
-        private readonly UserManager<AppUser> userManger;
+        private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly ITokenService tokenService;
         private readonly IMapper mapper;
@@ -24,12 +24,12 @@ namespace API.Controllers
 
         //public AccountController(DataContext context, ITokenService tokenService, IMapper mapper)   // Inject token service into account controller
         // public AccountController(UserManager<AppUser> userManger, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper)   // Inject token service into account controller
-        public AccountController(UserManager<AppUser> userManger, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper,
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper,
             IAccountService accountService)   // Inject token service into account controller
         {
             this.mapper = mapper;
             this.accountService = accountService;
-            this.userManger = userManger;
+            this.userManager = userManager;
             this.signInManager = signInManager;
             this.tokenService = tokenService;
             //this.context = context;
@@ -63,12 +63,12 @@ namespace API.Controllers
             //await this.context.SaveChangesAsync();  // Saves changes to Entity Framework
 
             // Creates user and saves into DB
-            var result = await userManger.CreateAsync(user, registerDto.Password);
+            var result = await userManager.CreateAsync(user, registerDto.Password);
 
             if(!result.Succeeded)
                 return BadRequest(result.Errors);
 
-            var roleResult = await userManger.AddToRoleAsync(user, "Member");
+            var roleResult = await userManager.AddToRoleAsync(user, "Member");
 
             if(!roleResult.Succeeded)
                 return BadRequest(roleResult.Errors);
@@ -92,7 +92,7 @@ namespace API.Controllers
             if (loginDto.Username.Equals("admin") ){
                 if (await UserExists(loginDto.Username)) {
                     // Proceed with login
-                    var user = await this.userManger.Users
+                    var user = await this.userManager.Users
                         .Include(p => p.Photos)
                         .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 
@@ -124,7 +124,7 @@ namespace API.Controllers
             // User already exists in DB
             if (await UserExists(loginDto.Username)) {
                 // Proceed with login
-                var user = await this.userManger.Users
+                var user = await this.userManager.Users
                     .Include(p => p.Photos)
                     .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 
@@ -173,12 +173,12 @@ namespace API.Controllers
 
                 // Creates user and saves into DB
                 loginDto.Password = "Pa$$w0rd";     // Hard coded for ssh authentication
-                var result = await userManger.CreateAsync(user, loginDto.Password);
+                var result = await userManager.CreateAsync(user, loginDto.Password);
 
                 if(!result.Succeeded)
                     return BadRequest(result.Errors);
 
-                var roleResult = await userManger.AddToRoleAsync(user, "Member");
+                var roleResult = await userManager.AddToRoleAsync(user, "Member");
 
                 if(!roleResult.Succeeded)
                     return BadRequest(roleResult.Errors);
@@ -205,7 +205,7 @@ namespace API.Controllers
 
             //var user = await this.context.Users.FirstOrDefaultAsync
             //var user = await this.context.Users
-            var user = await this.userManger.Users
+            var user = await this.userManager.Users
                 .Include(p => p.Photos)
                 .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 
@@ -247,7 +247,7 @@ namespace API.Controllers
         }
         private async Task<bool> UserExists(string username)
         {
-            return await this.userManger.Users.AnyAsync(x => x.UserName == username.ToLower());
+            return await this.userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
             //return await this.context.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
     }

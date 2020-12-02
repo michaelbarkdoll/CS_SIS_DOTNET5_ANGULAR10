@@ -15,6 +15,7 @@ namespace API.DTOs
         public int Age { get; set; }
         public string KnownAs { get; set; }
         public string PersonalURL { get; set; }
+        public string RequestedURL { get; set; }
         public DateTime Created { get; set; }
 
         public DateTime LastActive { get; set; }

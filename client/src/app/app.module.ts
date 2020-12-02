@@ -51,6 +51,12 @@ import { NosqlComponent } from './nosql/nosql.component';
 import { SshComponent } from './ssh/ssh.component';
 import { MicrosoftComponent } from './microsoft/microsoft.component';
 import { HelpComponent } from './help/help.component';
+import { PrinterAdminViewComponent } from './printer/printer-admin-view/printer-admin-view.component';
+import { PrinterAdminManagementComponent } from './printer/printer-admin-management/printer-admin-management.component';
+import { PrinterJobManagementComponent } from './printer/printer-job-management/printer-job-management.component';
+import { PrinterAdminStatusDialogComponent } from './printer/printer-admin-status-dialog/printer-admin-status-dialog.component';
+import { PrintJobAdminStatusDialogComponent } from './printer/print-job-admin-status-dialog/print-job-admin-status-dialog.component';
+import { WebadminComponent } from './webadmin/webadmin.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +100,13 @@ import { HelpComponent } from './help/help.component';
     NosqlComponent,
     SshComponent,
     MicrosoftComponent,
-    HelpComponent
+    HelpComponent,
+    PrinterAdminViewComponent,
+    PrinterAdminManagementComponent,
+    PrinterJobManagementComponent,
+    PrinterAdminStatusDialogComponent,
+    PrintJobAdminStatusDialogComponent,
+    WebadminComponent
   ],
   imports: [
     BrowserModule,

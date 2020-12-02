@@ -25,6 +25,12 @@ namespace API.Helpers
         public int TotalPages { get; set; }
         public int PageSize { get; set; }
         public int TotalCount { get; set; }
+        /////
+        // public int PrintJobPageNumber { get; set; }
+        // public int PrintJobTotalPages { get; set; }
+        // public int PrintJobPageSize { get; set; }
+        // public int PrintJobTotalCount { get; set; }
+
 
         public static async Task<PagedList<T>> CreateAsync(IQueryable<T> source, int pageNumber, int pageSize)
         {

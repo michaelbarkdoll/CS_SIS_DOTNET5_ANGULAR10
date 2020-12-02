@@ -32,6 +32,15 @@ namespace API.Helpers
 
             // CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));    // Add z to end of dates for client
 
+            CreateMap<PrintJob, PrintJobDto>();
+            CreateMap<AppUser, MemberPrintJobDto>();
+
+            CreateMap<AppUser, MemberPrintQuotaDto>();
+
+            CreateMap<Printer, PrinterDto>();
+            CreateMap<PrintJob, MemberPrintJobDto>();
+
+            CreateMap<MemberUpdateUrlDto, AppUser>();
         }
     }
 }

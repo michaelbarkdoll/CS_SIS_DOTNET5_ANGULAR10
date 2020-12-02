@@ -17,6 +17,8 @@ export class WeburlComponent implements OnInit {
   @ViewChild('editForm') editForm: NgForm;
   member: Member;
   user: User;
+  oldUrl: string;
+  oldRequestedURL: string;
 
   // Access browser events:  Window before unload
   @HostListener('window:beforeunload', ['$event']) unloadNofitication($event: any) {
@@ -36,6 +38,8 @@ export class WeburlComponent implements OnInit {
   loadMember() {
     this.memberService.getMember(this.user.username).subscribe(member => {
       this.member = member;
+      this.oldUrl = this.member.personalURL;
+      this.oldRequestedURL = this.member.requestedURL;
     })
   }
 

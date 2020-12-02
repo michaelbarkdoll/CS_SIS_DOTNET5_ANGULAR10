@@ -118,6 +118,9 @@ namespace API.Data.Migrations
                     b.Property<string>("OldPersonalURL")
                         .HasColumnType("text");
 
+                    b.Property<int>("PageQuota")
+                        .HasColumnType("integer");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
@@ -130,8 +133,14 @@ namespace API.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("RequestedURL")
+                        .HasColumnType("text");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
+
+                    b.Property<int>("TotalPagesPrinted")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
@@ -277,6 +286,82 @@ namespace API.Data.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("Photos");
+                });
+
+            modelBuilder.Entity("API.Entities.PrintJob", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("JobName")
+                        .HasColumnType("text");
+
+                    b.Property<int>("JobNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("JobOwner")
+                        .HasColumnType("text");
+
+                    b.Property<string>("JobStatus")
+                        .HasColumnType("text");
+
+                    b.Property<int>("NumberOfPages")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PagesPrinted")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PrinterId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PrinterName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("PrinterId");
+
+                    b.ToTable("PrintJobs");
+                });
+
+            modelBuilder.Entity("API.Entities.Printer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("Port")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PrinterName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SshHostname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SshPassword")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SshPublicKey")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SshUsername")
+                        .HasColumnType("text");
+
+                    b.Property<string>("URL")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Printers");
                 });
 
             modelBuilder.Entity("API.Entities.UserFile", b =>
@@ -502,6 +587,25 @@ namespace API.Data.Migrations
                     b.Navigation("AppUser");
                 });
 
+            modelBuilder.Entity("API.Entities.PrintJob", b =>
+                {
+                    b.HasOne("API.Entities.AppUser", "AppUser")
+                        .WithMany("PrintJobs")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.Printer", "Printer")
+                        .WithMany("PrintJobs")
+                        .HasForeignKey("PrinterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Printer");
+                });
+
             modelBuilder.Entity("API.Entities.UserFile", b =>
                 {
                     b.HasOne("API.Entities.AppUser", "AppUser")
@@ -589,6 +693,8 @@ namespace API.Data.Migrations
 
                     b.Navigation("Photos");
 
+                    b.Navigation("PrintJobs");
+
                     b.Navigation("UserFiles");
 
                     b.Navigation("UserRoles");
@@ -597,6 +703,11 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.Group", b =>
                 {
                     b.Navigation("Connections");
+                });
+
+            modelBuilder.Entity("API.Entities.Printer", b =>
+                {
+                    b.Navigation("PrintJobs");
                 });
 #pragma warning restore 612, 618
         }

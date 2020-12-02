@@ -15,11 +15,18 @@ namespace API.Interfaces
         // Task<bool> SaveAllAsync();
         Task<IEnumerable<AppUser>> GetUsersAsync();
         Task<AppUser> GetUserByIdAsync(int id);
+        Task<AppUser> GetUserByIdPrintJobAsync(int id);
         Task<AppUser> GetUserByUsernameAsync(string username);
+        Task<AppUser> GetUserByUsernamePrintJobAsync(string username);
+        Task<IEnumerable<PrinterDto>> GetPrintersAsync();
+
+        
         //Task<IEnumerable<MemberDto>> GetMembersAsync();
         Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams);
+        Task<PagedList<MemberDto>> GetMembersURLRequestsAsync(UserParams userParams);
         Task<MemberDto> GetMemberAsync(string username);
         Task<MemberFileDto> GetMemberFilesAsync(string username);
+        Task<MemberPrintJobDto> GetMemberPrintJobsAsync(string username);
         Task<string> GetUserGender(string username);
     }
 }

@@ -1,4 +1,6 @@
+import { PrintjobsComponent } from '../printjobs/printjobs.component';
 import { Photo } from './photo';
+import { PrintJob } from './printjob';
 
 export interface Member {
     id: number;
@@ -6,7 +8,6 @@ export interface Member {
     photoUrl: string;
     age: number;
     knownAs: string;
-    personalURL: string;
     created: Date;
     lastActive: Date;
     gender: string;
@@ -16,5 +17,16 @@ export interface Member {
     city: string;
     country: string;
     photos: Photo[];
+
+    dawgTag: number;
+    personalURL: string;
+    requestedURL: string;
+    oldPersonalURL: string;
+    pageQuota: number;
+    totalPagesPrinted: number;
+    printJobs: PrintJob[];
+    
+    
+
 }
 

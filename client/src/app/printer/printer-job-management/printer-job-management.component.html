@@ -1,0 +1,93 @@
+<div class="text-center mt-3">
+    <h2>Your print jobs - {{pagination?.totalItems}} found</h2>
+</div>
+
+
+<div class="container mt-3">
+    <form #form="ngForm" class="form-inline mb-3" (ngSubmit)="loadPrintJobs()" autocomplete="off">
+        <div class="form-group">
+            <label>Printer Name:</label>
+            <input type="string" class="form-control ml-1" style="width: 100px;" name="searchPrinter" [(ngModel)]="userParams.searchPrinter">
+        </div>
+        <div class="form-group">
+            <label class="ml-1">Job Owner:</label>
+            <input type="string" class="form-control ml-1" style="width: 100px;" name="searchUser" [(ngModel)]="userParams.searchUser">
+        </div>
+        <div class="form-group">
+            <label class="ml-1">Jobs Per Page:</label>
+            <input type="number" class="form-control ml-1" style="width: 70px;" name="printJobPageSize" [(ngModel)]="userParams.printJobPageSize">
+        </div>
+        <div class="form-group px-2">
+            <label>Show print jobs with status: </label>
+            <select name="printStatus" style="width: 130px" [(ngModel)]="userParams.printStatus" class="form-control ml-1">
+                <option *ngFor="let printStatus of printStatusList" [value]="printStatus.value">
+                    {{printStatus.display}}
+                </option>
+            </select>
+        </div>
+
+        <div class="col mt-1">
+            <button class="btn btn-primary ml-1 float-right" type="submit">Apply Filters</button>
+            <button (click)="resetFilters()" class="btn btn-info ml-1 float-right" type="submit">Reset Filters</button>
+        </div>
+
+    </form>
+</div>
+
+
+<div *ngIf="printJobs" class="row">
+    <table class="table">
+        <tr text-align="left">
+            <th style="width: 15%">Id</th>
+            <th style="width: 15%">jobNumber</th>
+            <th style="width: 15%">jobName</th>
+            <th style="width: 20%">jobOwner</th>
+            <th style="width: 5%">Pages</th>
+            <th style="width: 5%">Printed</th>
+            <th style="width: 10%;">printerName</th>
+            <th style="width: 15%">jobStatus</th>
+            <th style="width: 15%">Edit Job</th>
+            
+        </tr>
+        <tr *ngFor="let printJob of printJobs">
+            <td>{{ printJob.id }}</td>
+            <td>{{ printJob.jobNumber }}</td>
+            <td>{{ printJob.jobName }}</td>
+            <td>{{ printJob.jobOwner }}</td>
+            <td>{{ printJob.numberOfPages }}</td>
+            <td>{{ printJob.pagesPrinted }}</td>
+            <td>{{ printJob.printerName }}</td>
+            <td>{{ printJob.jobStatus }}</td>
+            <!-- <td><button (click)="openRolesModal(printJob)" class="btn btn-info">Edit Job</button></td> -->
+            <td><button type="button" class="btn btn-primary" (click)="openModal(template, printJob)">Edit Status</button></td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="d-flex justify-content-center" *ngIf="pagination">
+    <pagination 
+        [boundaryLinks]="true" 
+        [totalItems]="pagination.totalItems"
+        [itemsPerPage]="pagination.itemsPerPage"
+        [(ngModel)]="pagination.currentPage"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;" 
+        nextText="&rsaquo;" 
+        firstText="&laquo;" 
+        lastText="&raquo;"> 
+    </pagination>
+</div>
+
+
+<ng-template #template>
+    <div class="modal-body text-center">
+      <p>Modify job status to:</p>
+      <!-- <button type="button" class="btn btn-default m-1" (click)="confirm()" >Held</button> -->
+      <button type="button" class="btn btn-primary m-1" (click)="confirm()" >Held</button>
+      <button type="button" class="btn btn-primary m-1" (click)="confirm()" >Completed</button>
+      <button type="button" class="btn btn-primary m-1" (click)="confirm()" >Queued</button>
+      <button type="button" class="btn btn-primary m-1" (click)="confirm()" >Cancelled</button>
+      <button type="button" class="btn btn-primary m-1" (click)="decline()" >Exit</button>
+    </div>
+</ng-template>

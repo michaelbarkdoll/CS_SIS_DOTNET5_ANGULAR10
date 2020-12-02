@@ -25,7 +25,13 @@ namespace API.Entities
         public string Country { get; set; }
         public int DawgTag { get; set; }
         public string PersonalURL { get; set; }
+        public string RequestedURL { get; set; }
         public string OldPersonalURL { get; set; }
+        public int PageQuota { get; set; }
+        public int TotalPagesPrinted { get; set; }
+
+        // List of PrintJob that are owned by current user
+        public ICollection<PrintJob> PrintJobs { get; set; }
         public ICollection<Photo> Photos { get; set; }
         public ICollection<UserFile> UserFiles { get; set; }
 
