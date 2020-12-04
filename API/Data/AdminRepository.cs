@@ -21,66 +21,7 @@ namespace API.Data
             this.mapper = mapper;
             this.context = context;
         }
-/*
-        public async Task<PagedList<MemberAdminRoleView>> GetUsersPaginatedRoleList(UserParams userParams)
-        {
-            
-            var query5 = context.Users.AsQueryable();
 
-
-            List<MemberAdminRoleView> data = new List<MemberAdminRoleView>();
-
-            var query2 = (from a in context.UserRoles
-                          join b in context.Users on a.UserId equals b.Id
-                          select new AppUserRole { User = b, Role = a.Role });
-            
-            
-
-            var query = context.UserRoles.AsQueryable();
-
-
-            if(userParams.SearchUserID != 0) {
-                query = query.Where(u => u.UserId.Equals(userParams.SearchUserID));
-            }
-
-            query2 = userParams.OrderBy switch // New C# 8 switch expressions, no need for breaks 
-            {
-                // "Pending" => query.OrderBy(u => u.JobStatus),   // created case
-                // "Held" => query.OrderBy(u => u.JobStatus),   // created case
-                // "Completed" => query.OrderBy(u => u.JobStatus),   // created case
-                // _ => query.OrderBy(u => u.Id)
-                // _ => query.OrderByDescending(u => u.UserId)     // Default case (oldest first)
-                _ => query2.OrderByDescending(u => u.User.Id)     // Default case (oldest first)
-            };
-
-            query5 = userParams.OrderBy switch // New C# 8 switch expressions, no need for breaks 
-            {
-                // "Pending" => query.OrderBy(u => u.JobStatus),   // created case
-                // "Held" => query.OrderBy(u => u.JobStatus),   // created case
-                // "Completed" => query.OrderBy(u => u.JobStatus),   // created case
-                // _ => query.OrderBy(u => u.Id)
-                // _ => query.OrderByDescending(u => u.UserId)     // Default case (oldest first)
-                _ => query5.OrderByDescending(u => u.Id)     // Default case (oldest first)
-            };
-
-
-            foreach (var user in query2) {
-                System.Console.WriteLine($"{user.User.Id} {user.User.UserName} {user.Role.Name} {user.Role.Id}");
-                data.Add(new MemberAdminRoleView(user.User.Id, user.Role.Id, user.User.UserName));
-            }
-
-            var query3 = data.AsQueryable();
-
-
-            //Working
-            // return await PagedList<MemberAdminRoleView>.CreateAsync(query2.ProjectTo<MemberAdminRoleView>(mapper
-            //     .ConfigurationProvider).AsNoTracking(), userParams.PageNumber, userParams.PageSize);
-
-
-            return await PagedList<MemberAdminRoleView>.CreateAsync(query5.ProjectTo<MemberAdminRoleView>(mapper
-                .ConfigurationProvider).AsNoTracking(), userParams.PageNumber, userParams.PageSize);
-        }
-*/
         public async Task<PagedList<MemberAdminViewDto>> GetUsersPaginatedAccessList(UserParams userParams)
         {
             var query = context.Users.AsQueryable();

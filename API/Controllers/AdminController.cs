@@ -46,28 +46,6 @@ namespace API.Controllers
             return Ok(users);
         }
 
-        // [Authorize(Policy = "RequireAdminRole")]
-        // [HttpGet("users-paged-with-roles")]
-        // public async Task<ActionResult<MemberAdminRoleView>> GetUsersPagedWithRoles([FromQuery]UserParams userParams)
-        // {
-        //     var usersRoleList = await this.unitOfWork.AdminRepository.GetUsersPaginatedRoleList(userParams);
-
-        //     Response.AddPaginationHeader(usersRoleList.CurrentPage, usersRoleList.PageSize, usersRoleList.TotalCount, usersRoleList.TotalPages);
-
-        //     return Ok(usersRoleList);
-        // }
-
-        // [Authorize(Policy = "RequireAdminRole")]
-        // [HttpGet("users-paged-with-role-id")]
-        // public async Task<ActionResult<MemberAdminRoleView>> GetUsersPagedWithRoleId([FromQuery]UserParams userParams)
-        // {
-        //     var usersRoleList = await this.unitOfWork.AdminRepository.GetUsersPaginatedRoleList(userParams);
-
-        //     Response.AddPaginationHeader(usersRoleList.CurrentPage, usersRoleList.PageSize, usersRoleList.TotalCount, usersRoleList.TotalPages);
-
-        //     return Ok(usersRoleList);
-        // }
-
         [Authorize(Policy = "RequireAdminRole")]
         [HttpPost("edit-roles/{username}")]
         public async Task<ActionResult> EditRoles(string username, [FromQuery] string roles)
