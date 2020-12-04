@@ -8,6 +8,7 @@ namespace API.Interfaces
         IPrinterRepository PrinterRepository { get; }
         IMessageRepository MessageRepository { get; }
         ILikesRespository LikesRespository { get; }
+        IAdminRepository AdminRepository { get; }
         // Method to save all of changes
         Task<bool> Complete();
         // Used to see if EF has any changes

@@ -13,6 +13,8 @@ export class UserParams {
     printJobPageSize = 10;
     printerPageNumber = 1;
     printerPageSize = 5;
+    accessPageNumber = 1;
+    accessPageSize = 10;
     urlRequestsPageSize = 5;
     orderBy = 'lastActive';
     

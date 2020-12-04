@@ -19,7 +19,9 @@ namespace API.Data
 
         public IMessageRepository MessageRepository => new MessageRepository(context, mapper);
 
-        public ILikesRespository LikesRespository => new LikesRepository(context); 
+        public ILikesRespository LikesRespository => new LikesRepository(context);
+
+        public IAdminRepository AdminRepository => new AdminRepository(context, mapper);
 
         public async Task<bool> Complete()
         {

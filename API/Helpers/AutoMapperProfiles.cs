@@ -41,6 +41,24 @@ namespace API.Helpers
             CreateMap<PrintJob, MemberPrintJobDto>();
 
             CreateMap<MemberUpdateUrlDto, AppUser>();
+            CreateMap<MemberRolesDto, AppUser>();
+
+            CreateMap<AppUser, MemberAdminViewDto>();
+            
+            CreateMap<AppUserRole, MemberAdminRoleView>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
+                .ForMember(dest => dest.UserID, opt => opt.MapFrom(src => src.User.Id))
+                .ForMember(dest => dest.RoleID, opt => opt.MapFrom(src => src.Role.Id))
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name));
+
+                //Roles = u.UserRoles.Select(r => r.Role.Name).ToList()
+            CreateMap<AppUser, MemberAdminRoleView>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.UserID, opt => opt.MapFrom(src => src.Id))
+                // .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.))
+                .ForMember(dest => dest.UserRoles, opt => opt.MapFrom(src => src.UserRoles));
+                // .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.UserRoles.ToList()));
+                // .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.UserRoles.Where(c => c.User.Id == src.Id)));
         }
     }
 }

@@ -1,0 +1,93 @@
+<div class="text-center mt-3">
+    <h2>{{pagination?.totalItems}} users found</h2>
+</div>
+
+
+<div class="container mt-3">
+    <form #form="ngForm" class="form-inline mb-3" (ngSubmit)="getMembersPaginatedAccessList()" autocomplete="off">
+        <div class="form-group">
+            <label class="ml-1">Username:</label>
+            <!-- <input type="string" class="form-control ml-1" style="width: 100px;" name="searchUser" [(ngModel)]="userParams.searchUser"> -->
+            <input type="string" class="form-control ml-1" name="searchUser" [(ngModel)]="userParams.searchUser">
+        </div>
+        <!-- <div class="form-group px-2">
+            <label>Show print jobs with status: </label>
+            <select name="printStatus" style="width: 130px" [(ngModel)]="userParams.printStatus" class="form-control ml-1">
+                <option *ngFor="let userStatus of userStatusList" [value]="userStatus.value">
+                    {{userStatus.display}}
+                </option>
+            </select>
+        </div> -->
+
+        <div class="col mt-1">
+            <button class="btn btn-primary ml-1 float-right" type="submit">Apply Filters</button>
+            <button (click)="resetFilters()" class="btn btn-info ml-1 float-right" type="submit">Reset Filters</button>
+        </div>
+
+    </form>
+</div>
+
+
+
+<div class="row">
+    <table class="table">
+        <tr>
+            <th style="width: 30%">Username</th>
+            <!-- <th style="width: 30%">Dawgtag</th> -->
+            <!-- <th style="width: 40%">Active roles</th> -->
+            <th style="width: 30%">Access Permited</th>
+            <th style="width: 30%">Active Roles</th>
+            <th style="width: 30%">Allow Access</th>
+            <th style="width: 30%">Restrict Access</th>
+            <th style="width: 30%">Edit Roles</th>
+        </tr>
+        <tr *ngFor="let member of members">
+            <td>{{member.username}}</td>
+            <!-- <td>{{member.dawgtag}}</td> -->
+            <!-- <td>{{member.roles}}</td> -->
+            <td>{{member.accessPermitted}}</td>
+            <td>
+            <ng-container *ngFor="let userrole of member.userRoles">
+                
+                    <ng-container *ngIf="userrole.roleId == 1">
+                        [Member]
+                    </ng-container>
+                    <ng-container *ngIf="userrole.roleId == 2">
+                        [Admin]
+                    </ng-container>
+                    <ng-container *ngIf="userrole.roleId == 3">
+                        [Moderator]
+                    </ng-container>
+                
+            </ng-container>
+            </td>
+            <!-- [hidden]="!member.accessPermitted" -->
+            <td style="text-align:center">
+                <button [hidden]="member.accessPermitted" type="button" class="btn btn-primary"  (click)="approve(member)">Allow</button>
+            </td>
+            <td style="text-align:center">
+                <button [hidden]="!member.accessPermitted" type="button" class="btn btn-primary"  (click)="deny(member)">Restrict</button>
+            </td>
+            <td><button (click)="openRolesModal(member)" class="btn btn-info">Edit Roles</button></td>
+            
+        </tr>
+    </table>
+</div>
+
+
+
+
+
+<div class="d-flex justify-content-center" *ngIf="pagination">
+    <pagination 
+        [boundaryLinks]="true" 
+        [totalItems]="pagination.totalItems"
+        [itemsPerPage]="pagination.itemsPerPage"
+        [(ngModel)]="pagination.currentPage"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;" 
+        nextText="&rsaquo;" 
+        firstText="&laquo;" 
+        lastText="&raquo;"> 
+    </pagination>
+</div>

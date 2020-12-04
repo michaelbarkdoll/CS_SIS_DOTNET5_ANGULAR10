@@ -41,6 +41,9 @@ namespace API.Controllers
         //public async Task<ActionResult<AppUser>> Register(RegisterDto registerDto)
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
+            if(string.IsNullOrEmpty(registerDto.Username) || string.IsNullOrEmpty(registerDto.Password))
+                return BadRequest("Invalid attempt"); // 400 status
+
             if (await UserExists(registerDto.Username))
                 return BadRequest("Username is taken"); // 400 status
             
@@ -88,6 +91,9 @@ namespace API.Controllers
         //public async Task<ActionResult<AppUser>> Register(RegisterDto registerDto)
         public async Task<ActionResult<UserDto>> LoginV2(LoginDto loginDto)
         {
+            if(string.IsNullOrEmpty(loginDto.Username) || string.IsNullOrEmpty(loginDto.Password))
+                return Unauthorized("Invalid login");
+
             // Authenticate local admin superuser
             if (loginDto.Username.Equals("admin") ){
                 if (await UserExists(loginDto.Username)) {
@@ -143,6 +149,11 @@ namespace API.Controllers
                 // await signInManager.SignInAsync(user, true);
                 // await signInManager.SignOutAsync();
 
+                // Check access is permitted
+                if (user.AccessPermitted == false)
+                    // return Unauthorized(new {url = "http://www.example.com"});
+                    return BadRequest("Your account is presently not authorized to access this system.");
+                    // return Unauthorized();
                 
                 // Currently storing ssh users password as a fake password inside MS Identity. (Remove this later when more local accounts are permitted)
                 var result = await signInManager.CheckPasswordSignInAsync(user, "Pa$$w0rd", false);
@@ -162,14 +173,19 @@ namespace API.Controllers
                     Gender = user.Gender
                 };
             }
-            // User is not previously in DB
+            // User is not previously in DB, we'll create it with a default password managed by identity
             else {
                 //var user = mapper.Map<AppUser>(loginDto);
                 var user = new AppUser {
-                    UserName = loginDto.Username,
+                    UserName = loginDto.Username.ToLower(),
                     KnownAs = loginDto.Username
                 };
                 user.UserName = loginDto.Username.ToLower();
+
+                // Check access is permitted
+                if (user.AccessPermitted == false)
+                    // return Redirect("http://www.example.com");
+                    return Unauthorized();
 
                 // Creates user and saves into DB
                 loginDto.Password = "Pa$$w0rd";     // Hard coded for ssh authentication
@@ -182,7 +198,7 @@ namespace API.Controllers
 
                 if(!roleResult.Succeeded)
                     return BadRequest(roleResult.Errors);
-
+                
                 //return user;
                 return new UserDto
                 {
@@ -202,6 +218,8 @@ namespace API.Controllers
         //public async Task<ActionResult<AppUser>> Login(LoginDto loginDto)
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
+            if(string.IsNullOrEmpty(loginDto.Username) || string.IsNullOrEmpty(loginDto.Password))
+                return Unauthorized("Invalid login");
 
             //var user = await this.context.Users.FirstOrDefaultAsync
             //var user = await this.context.Users

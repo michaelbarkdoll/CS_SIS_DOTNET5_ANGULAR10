@@ -29,6 +29,9 @@ namespace API.Entities
         public string OldPersonalURL { get; set; }
         public int PageQuota { get; set; }
         public int TotalPagesPrinted { get; set; }
+        public string PrimaryMajor { get; set; }
+        public string SecondaryMajor { get; set; }
+        public bool AccessPermitted { get; set; }
 
         // List of PrintJob that are owned by current user
         public ICollection<PrintJob> PrintJobs { get; set; }
