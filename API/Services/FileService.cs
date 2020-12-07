@@ -46,10 +46,11 @@ namespace API.Services
                     var result = new UserFile {
                         //Id = 1;
                         Url = "",
-                        Description = "test",
+                        Description = "",
                         DateAdded = DateTime.Now,
                         isThesis = false,
                         isProject = false,
+                        isPrintJob = false,
                         isOther = false,
                         FilePath = filePath,
                         FileName = file.FileName,

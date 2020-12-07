@@ -107,6 +107,27 @@ namespace API.Controllers
             //return await _context.Users.FindAsync(id);
         }
 
+        //[Authorize(Roles = "Member")]
+        [HttpGet("user-files", Name = "GetUserByTokenFiles")]
+        public async Task<ActionResult<MemberFileDto>> GetUserByTokenFiles() 
+        {
+            var username = User.GetUsername();
+            //var user = await this.unitOfWork.UserRepository.GetUserByUsernameAsync(username);
+            //return this.mapper.Map<MemberDto>(user);
+
+            return await this.unitOfWork.UserRepository.GetMemberFilesAsync(username);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("user-files/{username}", Name = "GetUserNameFiles")]
+        public async Task<ActionResult<MemberFileDto>> GetUserNameFiles(string username) 
+        {
+            //var user = await this.unitOfWork.UserRepository.GetUserByUsernameAsync(username);
+            //return this.mapper.Map<MemberDto>(user);
+
+            return await this.unitOfWork.UserRepository.GetMemberFilesAsync(username);
+        }
+
         // Update a resource on our server
         [HttpPut]
         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
@@ -277,6 +298,37 @@ namespace API.Controllers
 
             if( user.UserFiles != null)
                 user.UserFiles.Add(fileresult);
+
+            if (await unitOfWork.Complete())
+            {
+                return CreatedAtRoute("GetUserFiles", new {username = user.UserName}, mapper.Map<UserFileDto>(fileresult));
+            }
+
+            return BadRequest("Problem adding userfile");
+        }
+
+        [HttpPost("add-user-file-print")]
+        //public async Task<ActionResult<PhotoDto>> AddUserFile(IFormFile file)
+        public async Task<ActionResult<UserFileDto>> AddUserFilePrint(IFormFile file)
+        {
+            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
+
+            var fileresult = await fileRepoService.AddFileAsync(file);
+
+            if(fileresult == null)
+                return BadRequest("Unable to upload file");
+
+            fileresult.isPrintJob = true;
+            
+            if( user.UserFiles == null) {
+                user.UserFiles = new List<UserFile>();
+            }
+
+            if( user.UserFiles != null)
+                user.UserFiles.Add(fileresult);
+
+                // Submit printjob to cups here
+                //SubmitToCups(fileresult)
 
             if (await unitOfWork.Complete())
             {

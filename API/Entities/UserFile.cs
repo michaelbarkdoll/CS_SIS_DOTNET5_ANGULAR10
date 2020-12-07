@@ -10,6 +10,7 @@ namespace API.Entities
         public DateTime DateAdded { get; set; }
         public bool isThesis { get; set; }
         public bool isProject { get; set; }
+        public bool isPrintJob { get; set; }
         public bool isOther { get; set; }
         public string PublicId { get; set; }
         public string FilePath { get; set; }

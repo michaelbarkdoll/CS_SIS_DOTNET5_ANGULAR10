@@ -1,6 +1,7 @@
 import { PrintjobsComponent } from '../printjobs/printjobs.component';
 import { Photo } from './photo';
 import { PrintJob } from './printjob';
+import { UserFile } from './userfile';
 
 export interface Member {
     id: number;
@@ -26,7 +27,7 @@ export interface Member {
     totalPagesPrinted: number;
     printJobs: PrintJob[];
     
-    
+    userFiles: UserFile[];
 
 }
 

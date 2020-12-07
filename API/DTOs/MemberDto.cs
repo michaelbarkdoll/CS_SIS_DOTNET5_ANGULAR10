@@ -27,6 +27,6 @@ namespace API.DTOs
         public string Country { get; set; }
         public ICollection<PhotoDto> Photos { get; set; }
 
-        //public ICollection<UserFileDto> UserFiles { get; set; }
+        // public ICollection<UserFileDto> UserFiles { get; set; }
     }
 }

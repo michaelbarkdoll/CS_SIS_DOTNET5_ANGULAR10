@@ -44,6 +44,7 @@ namespace API.Helpers
             CreateMap<MemberRolesDto, AppUser>();
 
             CreateMap<AppUser, MemberAdminViewDto>();
+            CreateMap<AppUser, MemberFileDto>();
         }
     }
 }
