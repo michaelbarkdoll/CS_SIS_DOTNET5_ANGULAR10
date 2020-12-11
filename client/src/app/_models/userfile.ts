@@ -6,7 +6,11 @@ export interface UserFile {
     isThesis: boolean;
     isProject: boolean;
     isPrintJob: boolean;
+    isClassList: boolean;
     isOther: boolean;
     publicId: string;
     fileName: string;
+    filePath?: string;
+    storageFileName?: string;
+    semesterId?: number;
 }

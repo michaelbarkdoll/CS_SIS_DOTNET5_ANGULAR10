@@ -13,6 +13,8 @@ namespace API.DTOs
         public bool isProject { get; set; }
         public bool isOther { get; set; }
         public bool isPrintJob { get; set; }
+        public bool isClassList { get; set; }
+        public int semesterId { get; set; }
         public string PublicId { get; set; }
         //public string FilePath { get; set; }
         public string FileName { get; set; }

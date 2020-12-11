@@ -108,8 +108,8 @@ namespace API.Controllers
         }
 
         //[Authorize(Roles = "Member")]
-        [HttpGet("user-files", Name = "GetUserByTokenFiles")]
-        public async Task<ActionResult<MemberFileDto>> GetUserByTokenFiles() 
+        [HttpGet("get-user-files-by-token", Name = "GetUserFilesByToken")]
+        public async Task<ActionResult<MemberFileDto>> GetUserFilesByToken() 
         {
             var username = User.GetUsername();
             //var user = await this.unitOfWork.UserRepository.GetUserByUsernameAsync(username);
@@ -301,7 +301,8 @@ namespace API.Controllers
 
             if (await unitOfWork.Complete())
             {
-                return CreatedAtRoute("GetUserFiles", new {username = user.UserName}, mapper.Map<UserFileDto>(fileresult));
+                // return CreatedAtRoute("GetUserFiles", new {username = user.UserName}, mapper.Map<UserFileDto>(fileresult));
+                return CreatedAtRoute("GetUserFilesByToken", mapper.Map<UserFileDto>(fileresult));
             }
 
             return BadRequest("Problem adding userfile");
@@ -332,13 +333,14 @@ namespace API.Controllers
 
             if (await unitOfWork.Complete())
             {
-                return CreatedAtRoute("GetUserFiles", new {username = user.UserName}, mapper.Map<UserFileDto>(fileresult));
+                // return CreatedAtRoute("GetUserFiles", new {username = user.UserName}, mapper.Map<UserFileDto>(fileresult));
+                return CreatedAtRoute("GetUserFilesByToken", mapper.Map<UserFileDto>(fileresult));
             }
 
             return BadRequest("Problem adding userfile");
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpGet("get-user-files/{username}", Name = "GetUserFiles")]
         public async Task<ActionResult<MemberFileDto>> GetUserFiles(string username) 
         {

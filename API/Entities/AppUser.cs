@@ -32,6 +32,11 @@ namespace API.Entities
         public string PrimaryMajor { get; set; }
         public string SecondaryMajor { get; set; }
         public bool AccessPermitted { get; set; }
+        public string EmailSIU { get; set; }
+        public string PrimaryMajorProgram { get; set; }
+        public string CLASS_LEVEL_BOAP { get; set; }
+        public string EnrollmentStartTerm { get; set; }
+        public int EnrollmentStartYear { get; set; }
 
         // List of PrintJob that are owned by current user
         public ICollection<PrintJob> PrintJobs { get; set; }

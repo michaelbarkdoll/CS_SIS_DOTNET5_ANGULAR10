@@ -1,0 +1,52 @@
+<div *ngIf="!isHidden" class="row">
+    <table class="table mt-3">
+        <tr text-align="left">
+            <th style="width: 15%">Id</th>
+            <th style="width: 15%">Filename</th>
+            <th style="width: 15%">Date Added</th>
+            <th style="width: 15%">Add Users</th>
+            <th style="width: 15%">Allow Logins</th>
+            <th style="width: 15%">Assign Primary Major</th>
+            <th style="width: 15%">Disable Logins</th>
+            <!-- <th style="width: 15%">Delete</th> -->
+        </tr>
+        <tr *ngFor="let classList of classLists">
+            <ng-container *ngIf="classList.isClassList">
+                <td>{{classList.id}} </td>
+                <td>{{classList.fileName}}</td>
+                <td>{{classList.dateAdded | date:'shortDate' }}</td>
+                <td style="text-align:left"><button type="button" class="btn btn-primary"  (click)="batchAddUsersFromClassList(classList.publicId)">Add Users</button></td>
+                <td style="text-align:left"><button type="button" class="btn btn-primary"  (click)="batchAllowUsersLoginFromClassList(classList.publicId)">Allow</button></td>
+                <td style="text-align:left"><button type="button" class="btn btn-primary"  (click)="batchUpdateMajorsFromClassList(classList.publicId)">Assign</button></td>
+                <td style="text-align:left"><button type="button" class="btn btn-primary"  (click)="batchDisableUsersLoginFromClassList(classList.publicId)">Disable</button></td>
+            </ng-container>
+            
+            <!-- <ng-container *ngIf='"userParamsSem.searchYear" === "semester.year"'>
+                
+            </ng-container> -->
+            <!-- <td>{{semester.id}} </td>
+            <td>{{semester.year}}</td>
+            <td>{{semester.term}}</td> -->
+            <!-- <td style="text-align:left"><button type="button" class="btn btn-primary"  (click)="uploadsemester(semester)">Upload Courselist CSV</button></td>
+            <td style="text-align:left"><button type="button" class="btn btn-primary"  (click)="processSemesterCSV(semester)">Process Courselist CSV</button></td> -->
+            <!-- <td style="text-align:center"><button type="button" class="btn btn-secondary" (click)="deletesemester(semester)">Delete</button></td> -->
+        </tr>
+    </table>
+</div>
+
+
+
+<!-- <div class="d-flex justify-content-center" *ngIf="pagination && !isHidden"> -->
+<div class="d-flex justify-content-center" *ngIf="pagination">
+    <pagination 
+        [boundaryLinks]="true" 
+        [totalItems]="pagination.totalItems"
+        [itemsPerPage]="pagination.itemsPerPage"
+        [(ngModel)]="pagination.currentPage"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;" 
+        nextText="&rsaquo;" 
+        firstText="&laquo;" 
+        lastText="&raquo;"> 
+    </pagination>
+</div>

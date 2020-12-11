@@ -45,6 +45,10 @@ namespace API.Helpers
 
             CreateMap<AppUser, MemberAdminViewDto>();
             CreateMap<AppUser, MemberFileDto>();
+            // CreateMap<Course, Course>();
+            CreateMap<Course, CourseDto>();
+            // CreateMap<Semester, Semester>();
+            CreateMap<Semester, SemesterDto>();
         }
     }
 }

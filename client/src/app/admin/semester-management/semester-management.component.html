@@ -1,0 +1,290 @@
+
+<div *ngIf="!isHidden" class="row">
+    <div class="col-12">
+        <form *ngIf="semesters"  #form="ngForm" class="form-inline mb-3 mt-3" (ngSubmit)="loadSemesters()" autocomplete="off">
+            <div class="form-group px-2">
+                <label>Term: </label>
+                <select name="term" style="width: 130px" [(ngModel)]="userParams.searchTerm" class="form-control ml-1">
+                    <option *ngFor="let term of termList" [value]="term.value">
+                        {{term.display}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Year:</label>
+                <input type="string" class="form-control ml-1" style="width: 100px;" name="Year" [(ngModel)]="userParams.searchYear">
+            </div>
+            <div class="col">
+                <div class="btn-group float-right">
+                    <button class="btn btn-primary ml-1" type="submit">Apply Filters</button>
+                    <button (click)="resetFilters()" class="btn btn-info ml-1" type="submit">Reset Filters</button>
+                </div>
+            </div>
+            <div class="col">
+                <div class="btn-group float-right">
+                    <button class="btn btn-primary ml-1" type="button" (click)="toggleCreateSemester()">Add Semester</button>
+                </div>
+            </div>   
+        </form>
+    </div>
+    <table class="table mt-3">
+        <tr text-align="left">
+            <th style="width: 15%">Id</th>
+            <th style="width: 15%">Term</th>
+            <th style="width: 15%">Year</th>
+            <th style="width: 15%">Upload Data</th>
+            <th style="width: 15%">Process Courselist CSV</th>
+            <!-- <th style="width: 15%">Delete</th> -->
+        </tr>
+        <tr *ngFor="let semester of semesters">
+            <td>{{semester.id}} </td>
+            <td>{{semester.term}}</td>
+            <td>{{semester.year}}</td>
+            <!-- <ng-container *ngIf='"userParamsSem.searchYear" === "semester.year"'>
+                
+            </ng-container> -->
+            <!-- <td>{{semester.id}} </td>
+            <td>{{semester.year}}</td>
+            <td>{{semester.term}}</td> -->
+            <td style="text-align:left"><button type="button" class="btn btn-primary"  (click)="uploadsemester(semester)">Upload Courselist CSV</button></td>
+            <td style="text-align:left"><button type="button" class="btn btn-primary"  (click)="processSemesterCSV(semester)">Process Courselist CSV</button></td>
+            <!-- <td style="text-align:center"><button type="button" class="btn btn-secondary" (click)="deletesemester(semester)">Delete</button></td> -->
+        </tr>
+    </table>
+    
+</div>
+
+<div class="d-flex justify-content-center" *ngIf="pagination && !isHidden">
+    <pagination 
+        [boundaryLinks]="true" 
+        [totalItems]="pagination.totalItems"
+        [itemsPerPage]="pagination.itemsPerPage"
+        [(ngModel)]="pagination.currentPage"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;" 
+        nextText="&rsaquo;" 
+        firstText="&laquo;" 
+        lastText="&raquo;"> 
+    </pagination>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+    <!-- <div class="col-4">
+        <h1>Semester Manager</h1>
+    </div> -->
+    <!-- <div class="col-8">
+        <div class="alert alert-info" *ngIf="editForm.dirty">
+            <strong>Information:</strong> You have made changes.  Any unsaved changes will be lost.
+        </div>
+    </div> -->
+    
+    
+    
+
+
+    <div class="col-4" *ngIf="selectedSemester">
+        <div class="card">
+            <!-- <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.knownAs}}" class="card-img-top img-thumbnail"> -->
+                <div class="card-body">
+
+                    <div >
+                        <h4>Uploading data for:</h4>
+                        <p></p>
+                        <div>
+                            <strong>Semester id:</strong>
+                            <p>{{selectedSemester.id}}</p> 
+                        </div>
+                        <div>
+                            <strong>Semester Term:</strong>
+                            <p>{{selectedSemester.term}}</p>
+                        </div>
+                        <div>
+                            <strong>Semester Year:</strong>
+                            <p>{{selectedSemester.year}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                        <!-- <button [disabled]="!(editForm.dirty)" form="editForm" type="submit" class="btn btn-success btn-block">Save Changes</button> -->
+                        <button type="button" class="btn btn-primary"  (click)="cancelUploadSemester(selectedSemester)">View Semesters</button>
+                </div>
+        </div>
+    </div>
+
+    <div class="col-8" *ngIf="selectedSemester">
+        <tabset class="member-tabset">
+            
+            <!-- <tab heading='About {{member.knownAs}}'>
+                <form #editForm="ngForm" id="editForm" (ngSubmit)="updateMember()">
+                    <h4>Description</h4>
+                <textarea class="form-control" [(ngModel)]="member.introduction" name="introduction" rows="6"></textarea>
+                <h4 class="mt-2">Looking For</h4> 
+                <textarea class="form-control" [(ngModel)]="member.lookingFor" name="lookingFor" rows="6"></textarea>
+                <h4 class="mt-2">Interests</h4>
+                <textarea class="form-control" [(ngModel)]="member.interests" name="interests" rows="6"></textarea>
+                <h4 class="mt-2">Location Details:</h4>
+                <div class="form-inline">
+                    <label for="city">City: </label>
+                    <input [(ngModel)]="member.city" name="city" type="city" class="form-control mx-2">
+                    <label for="country">Country: </label>
+                    <input [(ngModel)]="member.country" name="country" type="country" class="form-control mx-2">
+                </div>
+                </form>
+                
+            </tab>-->
+            <tab heading='Upload CSV'>
+                <app-upload-classlist [semester]="selectedSemester"></app-upload-classlist>
+                <!-- <app-printsubmit></app-printsubmit> -->
+                <!-- <app-photo-editor></app-photo-editor> -->
+            </tab> 
+        </tabset>
+    </div>
+
+
+
+
+
+    
+
+</div>
+
+<div class="row">
+    <div class="col-4" *ngIf="selectedSemesterCSV">
+        <div class="card">
+            <!-- <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.knownAs}}" class="card-img-top img-thumbnail"> -->
+                <div class="card-body">
+
+                    <div >
+                        <h4>Semester:</h4>
+                        <p></p>
+                        <div>
+                            <strong>Semester id:</strong>
+                            <p>{{selectedSemesterCSV.id}}</p> 
+                        </div>
+                        <div>
+                            <strong>Semester Term:</strong>
+                            <p>{{selectedSemesterCSV.term}}</p>
+                        </div>
+                        <div>
+                            <strong>Semester Year:</strong>
+                            <p>{{selectedSemesterCSV.year}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                        <button type="button" class="btn btn-primary"  (click)="cancelUploadSemester(selectedSemester)">View Semesters</button>
+                </div>
+        </div>
+    </div>
+    <div class="col-8" *ngIf="selectedSemesterCSV">
+        <tabset class="member-tabset">
+            <tab heading='Process CSV'>
+                <app-process-classlist [semester]="selectedSemesterCSV"></app-process-classlist>
+                <!-- <app-upload-classlist [semester]="selectedSemester"></app-upload-classlist> -->
+            </tab> 
+        </tabset>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row" *ngIf="addSemester">
+    <div class="col-12" >
+        <!-- <button type="button" class="btn btn-primary"  (click)="toggleCreateSemester()">Cancel</button> -->
+    </div>
+    <!-- <div class="col-4">
+        <h1>Semester Manager</h1>
+    </div> -->
+    <!-- <div class="col-8">
+        <div class="alert alert-info" *ngIf="editForm.dirty">
+            <strong>Information:</strong> You have made changes.  Any unsaved changes will be lost.
+        </div>
+    </div> -->
+    <form *ngIf="semesters"  #form="ngForm" class="form mb-3 mt-3" (ngSubmit)="createNewSemester()" autocomplete="off">
+        <div class="form-group">
+            <label>Year:</label>
+            <input type="number" class="form-control ml-1" style="width: 100px;" name="Year" [(ngModel)]="this.newSemesterYear">
+        </div>
+
+        <div class="form-group px-2">
+            <label>Term: </label>
+            <select name="term" style="width: 130px" [(ngModel)]="this.newSemesterTermName" class="form-control ml-1">
+                <option *ngFor="let term of newTermList" [value]="term.value">
+                    {{term.display}}
+                </option>
+            </select>
+        </div>
+        
+        <!-- <div class="col">
+            <div class="btn-group float-right">
+                <button class="btn btn-primary ml-1" type="submit">Apply Filters</button>
+                <button (click)="resetFilters()" class="btn btn-info ml-1" type="submit">Reset Filters</button>
+            </div>
+        </div> -->
+        <div class="col">
+            <div class="btn-group float-right">
+                <button type="button" class="btn btn-secondary ml-3"  (click)="toggleCreateSemester()">Cancel</button>
+                <button class="btn btn-primary ml-1" type="submit">Submit</button>
+                <!-- <button class="btn btn-primary ml-1" type="button" (click)="toggleCreateSemester()">Add Semester</button> -->
+            </div>
+        </div>   
+    </form>
+</div>

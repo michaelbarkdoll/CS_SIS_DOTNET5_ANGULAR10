@@ -60,6 +60,9 @@ namespace API.Data.Migrations
                     b.Property<bool>("AccessPermitted")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("CLASS_LEVEL_BOAP")
+                        .HasColumnType("text");
+
                     b.Property<string>("City")
                         .HasColumnType("text");
 
@@ -85,6 +88,15 @@ namespace API.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("EmailSIU")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EnrollmentStartTerm")
+                        .HasColumnType("text");
+
+                    b.Property<int>("EnrollmentStartYear")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Gender")
                         .HasColumnType("text");
@@ -137,6 +149,9 @@ namespace API.Data.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("PrimaryMajor")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PrimaryMajorProgram")
                         .HasColumnType("text");
 
                     b.Property<string>("RequestedURL")
@@ -218,6 +233,114 @@ namespace API.Data.Migrations
                     b.ToTable("Connections");
                 });
 
+            modelBuilder.Entity("API.Entities.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("BeginTime1")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("BeginTime2")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("BeginTime3")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Building")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CRN")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClassFormat")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClassMeetingTimes")
+                        .HasColumnType("text");
+
+                    b.Property<string>("College")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CourseCredits")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CourseStatus")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CourseTitle")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("EndTime1")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EndTime2")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EndTime3")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FullCourseDescription")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Prerequisites")
+                        .HasColumnType("text");
+
+                    b.Property<int>("RequiredSeqNum")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SemesterId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Site")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("TA")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("WithdrawlDropDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SemesterId");
+
+                    b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("API.Entities.CourseStudent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("CourseStudents");
+                });
+
             modelBuilder.Entity("API.Entities.Group", b =>
                 {
                     b.Property<string>("Name")
@@ -226,6 +349,35 @@ namespace API.Data.Migrations
                     b.HasKey("Name");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("API.Entities.Instructor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Instructors");
                 });
 
             modelBuilder.Entity("API.Entities.Message", b =>
@@ -373,6 +525,24 @@ namespace API.Data.Migrations
                     b.ToTable("Printers");
                 });
 
+            modelBuilder.Entity("API.Entities.Semester", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("Term")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Semesters");
+                });
+
             modelBuilder.Entity("API.Entities.UserFile", b =>
                 {
                     b.Property<int>("Id")
@@ -404,6 +574,9 @@ namespace API.Data.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("text");
 
+                    b.Property<bool>("isClassList")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("isOther")
                         .HasColumnType("boolean");
 
@@ -416,11 +589,14 @@ namespace API.Data.Migrations
                     b.Property<bool>("isThesis")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("semesterId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("UserFile");
+                    b.ToTable("UserFiles");
                 });
 
             modelBuilder.Entity("API.Entities.UserLike", b =>
@@ -569,6 +745,47 @@ namespace API.Data.Migrations
                         .HasForeignKey("GroupName");
                 });
 
+            modelBuilder.Entity("API.Entities.Course", b =>
+                {
+                    b.HasOne("API.Entities.Semester", "Semester")
+                        .WithMany("Courses")
+                        .HasForeignKey("SemesterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Semester");
+                });
+
+            modelBuilder.Entity("API.Entities.CourseStudent", b =>
+                {
+                    b.HasOne("API.Entities.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.Course", "Course")
+                        .WithMany("CourseStudents")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("API.Entities.Instructor", b =>
+                {
+                    b.HasOne("API.Entities.Course", "Course")
+                        .WithMany("Instructors")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("API.Entities.Message", b =>
                 {
                     b.HasOne("API.Entities.AppUser", "Recipient")
@@ -712,6 +929,13 @@ namespace API.Data.Migrations
                     b.Navigation("UserRoles");
                 });
 
+            modelBuilder.Entity("API.Entities.Course", b =>
+                {
+                    b.Navigation("CourseStudents");
+
+                    b.Navigation("Instructors");
+                });
+
             modelBuilder.Entity("API.Entities.Group", b =>
                 {
                     b.Navigation("Connections");
@@ -720,6 +944,11 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.Printer", b =>
                 {
                     b.Navigation("PrintJobs");
+                });
+
+            modelBuilder.Entity("API.Entities.Semester", b =>
+                {
+                    b.Navigation("Courses");
                 });
 #pragma warning restore 612, 618
         }

@@ -58,6 +58,9 @@ import { PrinterAdminStatusDialogComponent } from './printer/printer-admin-statu
 import { PrintJobAdminStatusDialogComponent } from './printer/print-job-admin-status-dialog/print-job-admin-status-dialog.component';
 import { WebadminComponent } from './webadmin/webadmin.component';
 import { UserAccessManagementComponent } from './admin/user-access-management/user-access-management.component';
+import { SemesterManagementComponent } from './admin/semester-management/semester-management.component';
+import { UploadClasslistComponent } from './admin/upload-classlist/upload-classlist.component';
+import { ProcessClasslistComponent } from './admin/process-classlist/process-classlist.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +111,10 @@ import { UserAccessManagementComponent } from './admin/user-access-management/us
     PrinterAdminStatusDialogComponent,
     PrintJobAdminStatusDialogComponent,
     WebadminComponent,
-    UserAccessManagementComponent
+    UserAccessManagementComponent,
+    SemesterManagementComponent,
+    UploadClasslistComponent,
+    ProcessClasslistComponent
   ],
   imports: [
     BrowserModule,

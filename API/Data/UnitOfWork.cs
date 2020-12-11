@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
+using API.Entities;
 using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Data
 {
@@ -8,8 +10,12 @@ namespace API.Data
     {
         private readonly IMapper mapper;
         private readonly DataContext context;
-        public UnitOfWork(DataContext context, IMapper mapper)
+        private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
+        public UnitOfWork(DataContext context, IMapper mapper, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
+            this.signInManager = signInManager;
+            this.userManager = userManager;
             this.context = context;
             this.mapper = mapper;
         }
@@ -21,7 +27,8 @@ namespace API.Data
 
         public ILikesRespository LikesRespository => new LikesRepository(context);
 
-        public IAdminRepository AdminRepository => new AdminRepository(context, mapper);
+        public IAdminRepository AdminRepository => new AdminRepository(context, mapper, signInManager, userManager);
+        public ICoursesRepository CoursesRepository => new CoursesRepository(context, mapper);
 
         public async Task<bool> Complete()
         {

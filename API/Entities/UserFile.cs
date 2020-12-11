@@ -1,7 +1,9 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Entities
 {
+    [Table("UserFiles")]
     public class UserFile
     {
         public int Id { get; set; }
@@ -11,6 +13,8 @@ namespace API.Entities
         public bool isThesis { get; set; }
         public bool isProject { get; set; }
         public bool isPrintJob { get; set; }
+        public bool isClassList { get; set; }
+        public int semesterId { get; set; }
         public bool isOther { get; set; }
         public string PublicId { get; set; }
         public string FilePath { get; set; }

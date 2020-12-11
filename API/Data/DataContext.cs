@@ -30,6 +30,10 @@ namespace API.Data
         public DbSet<Connection> Connections { get; set; }
         public DbSet<PrintJob> PrintJobs { get; set; }
         public DbSet<Printer> Printers { get; set; }
+        public DbSet<Semester> Semesters { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Instructor> Instructors { get; set; }
+        public DbSet<UserFile> UserFiles { get; set; }
 
         // Give entity configuration
         protected override void OnModelCreating(ModelBuilder builder)

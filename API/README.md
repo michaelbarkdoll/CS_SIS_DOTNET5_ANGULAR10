@@ -338,3 +338,8 @@ COPY bin/Release/net5.0/publish/ /App/
 WORKDIR /App
 ENTRYPOINT ["dotnet", "/App/NetCore.Docker.dll"]
 ```
+
+NuGet Package for parsing CSV files
+https://joshclose.github.io/CsvHelper/
+https://github.com/JoshClose/CsvHelper
+

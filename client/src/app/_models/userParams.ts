@@ -15,8 +15,15 @@ export class UserParams {
     printerPageSize = 5;
     accessPageNumber = 1;
     accessPageSize = 10;
+    semesterPageNumber = 1;
+    semesterPageSize = 10;
+    classlistPageNumber = 1;
+    classlistPageSize = 10;
     urlRequestsPageSize = 5;
     orderBy = 'lastActive';
+    searchYear: string;
+    searchTerm: string;
+    semesterId: number;
     
 
     constructor(user: User) {
@@ -24,6 +31,8 @@ export class UserParams {
         this.printStatus = 'Held';
         this.searchUser = "";
         this.searchPrinter = "";
+        this.searchYear = "All";
+        this.searchTerm = "All";
     }
 }
 

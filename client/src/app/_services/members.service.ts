@@ -172,7 +172,7 @@ export class MembersService {
     // console.log(member);
 
     // Make the API call if we don't have the member
-    return this.http.get<Member>(this.baseUrl + 'users/user-files');
+    return this.http.get<Member>(this.baseUrl + 'users/get-user-files-by-token');
   }
 
   //Admin method
@@ -187,7 +187,7 @@ export class MembersService {
     // console.log(member);
 
     // Make the API call if we don't have the member
-    return this.http.get<Member>(this.baseUrl + 'users/user-files' + username);
+    return this.http.get<Member>(this.baseUrl + 'admin/user-files' + username);
   }
 /*
   getMember(username: string) {
