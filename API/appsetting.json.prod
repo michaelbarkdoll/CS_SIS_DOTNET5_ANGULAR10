@@ -1,0 +1,43 @@
+{
+  "TokenKey": "super duck key",
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "CloudinarySettings": {
+    "CloudName": "",
+    "ApiKey": "",
+    "ApiSecret": ""
+  },
+  "FileRepoSettings": {
+    "RepoDirectory": "/sis",
+    "PhotosDirectory": "userphotos",
+    "DocumentsDirectory": "documents",
+    "UserFilesDirectory": "userfiles"
+  },
+  "sshSettings": {
+    "hostname": "localhost",
+    "port": "22",
+    "www2host": "localhost",
+    "www2port": "22",
+    "www2user": "",
+    "www2passwd": "",
+    "pc00host": "localhost",
+    "pc00port": "22",
+    "pc00user": "",
+    "pc00passwd": "",
+    "pc01host": "localhost",
+    "pc01port": "22",
+    "pc01user": "",
+    "pc01passwd": ""
+  },
+  "DuoSettings": {
+    "host": "",
+    "integrationKey": "",
+    "secretKey": ""
+  },
+  "AllowedHosts": "*"
+}
