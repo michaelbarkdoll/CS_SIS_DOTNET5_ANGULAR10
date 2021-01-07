@@ -127,8 +127,12 @@ namespace API.Controllers
                 return BadRequest("Invalid login");
             }
 
+            
+
             // User already exists in DB
             if (await UserExists(loginDto.Username)) {
+                
+                
                 // Proceed with login
                 var user = await this.userManager.Users
                     .Include(p => p.Photos)
@@ -161,7 +165,21 @@ namespace API.Controllers
                 if (!result.Succeeded)
                     return Unauthorized();
                 
-
+                if(loginDto.Factor.Equals("SMS")) {
+                    if( ! await this.accountService.AuthenticateUserTwoFactorAsync(loginDto.Username, loginDto.Factor, null)) {
+                        return BadRequest("Please use passcode sent to your phone.");
+                    }
+                }
+            
+                if(!string.IsNullOrEmpty(loginDto.Passcode)) {
+                    if( ! await this.accountService.AuthenticateUserTwoFactorAsync(loginDto.Username, loginDto.Factor, loginDto.Passcode)) {
+                        return BadRequest("Invalid login");
+                    }
+                }
+                // if( ! await this.accountService.AuthenticateUserTwoFactorAsync(loginDto.Username, loginDto.Factor)) {
+                else if( ! await this.accountService.AuthenticateUserTwoFactorAsync(loginDto.Username, loginDto.Factor, null)) {
+                    return BadRequest("Invalid login");
+                }
                 //return user;
 
                 return new UserDto
@@ -182,11 +200,6 @@ namespace API.Controllers
                 };
                 user.UserName = loginDto.Username.ToLower();
 
-                // Check access is permitted
-                if (user.AccessPermitted == false)
-                    // return Redirect("http://www.example.com");
-                    return Unauthorized();
-
                 // Creates user and saves into DB
                 loginDto.Password = "Pa$$w0rd";     // Hard coded for ssh authentication
                 var result = await userManager.CreateAsync(user, loginDto.Password);
@@ -198,6 +211,27 @@ namespace API.Controllers
 
                 if(!roleResult.Succeeded)
                     return BadRequest(roleResult.Errors);
+
+                // Check access is permitted
+                if (user.AccessPermitted == false)
+                    // return Redirect("http://www.example.com");
+                    return Unauthorized();
+
+                if(loginDto.Factor.Equals("SMS")) {
+                    if( ! await this.accountService.AuthenticateUserTwoFactorAsync(loginDto.Username, loginDto.Factor, null)) {
+                        return BadRequest("Please use passcode sent to your phone.");
+                    }
+                }
+            
+                if(!string.IsNullOrEmpty(loginDto.Passcode)) {
+                    if( ! await this.accountService.AuthenticateUserTwoFactorAsync(loginDto.Username, loginDto.Factor, loginDto.Passcode)) {
+                        return BadRequest("Invalid login");
+                    }
+                }
+                // if( ! await this.accountService.AuthenticateUserTwoFactorAsync(loginDto.Username, loginDto.Factor)) {
+                else if( ! await this.accountService.AuthenticateUserTwoFactorAsync(loginDto.Username, loginDto.Factor, null)) {
+                    return BadRequest("Invalid login");
+                }
                 
                 //return user;
                 return new UserDto

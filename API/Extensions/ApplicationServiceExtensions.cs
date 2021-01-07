@@ -27,6 +27,7 @@ namespace API.Extensions
             services.AddScoped<IFileRepoService, FileService>();
 
             services.Configure<sshSettings>(config.GetSection("sshSettings"));
+            services.Configure<DuoSettings>(config.GetSection("DuoSettings"));
             services.AddScoped<IAccountService, AccountService>();
             
             // Add service for our repository

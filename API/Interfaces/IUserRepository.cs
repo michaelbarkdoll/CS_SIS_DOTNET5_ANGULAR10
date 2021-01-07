@@ -16,6 +16,8 @@ namespace API.Interfaces
         Task<IEnumerable<AppUser>> GetUsersAsync();
         Task<AppUser> GetUserByIdAsync(int id);
         Task<AppUser> GetUserByIdPrintJobAsync(int id);
+        Task<MemberSshKeysDto> GetMemberSshKeysAsync(int id);
+        Task<MemberSshKeysDto> GetMemberSshKeysAsync(string username);
         Task<AppUser> GetUserByUsernameAsync(string username);
         Task<AppUser> GetUserByUsernamePrintJobAsync(string username);
         Task<IEnumerable<PrinterDto>> GetPrintersAsync();

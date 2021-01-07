@@ -194,5 +194,20 @@ namespace API.Data
                 .SingleOrDefaultAsync();  // This is where we exec database query
             // throw new NotImplementedException();
         }
+
+        public async Task<MemberSshKeysDto> GetMemberSshKeysAsync(string username) {
+            return await context.Users
+                .Where(x => x.UserName == username)
+                .Include(p => p.Photos)
+                .ProjectTo<MemberSshKeysDto>(mapper.ConfigurationProvider) // Use automapper
+                .SingleOrDefaultAsync();  // This is where we exec database query
+        }
+
+        public async Task<MemberSshKeysDto> GetMemberSshKeysAsync(int id) {
+            return await context.Users
+                .Include(p => p.Photos)
+                .ProjectTo<MemberSshKeysDto>(mapper.ConfigurationProvider) // Use automapper
+                .SingleOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

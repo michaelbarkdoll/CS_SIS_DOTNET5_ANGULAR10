@@ -49,6 +49,9 @@ namespace API.Helpers
             CreateMap<Course, CourseDto>();
             // CreateMap<Semester, Semester>();
             CreateMap<Semester, SemesterDto>();
+
+            CreateMap<AppUser, MemberSshKeysDto>();
+            CreateMap<MemberUpdateSshDto, AppUser>();
         }
     }
 }

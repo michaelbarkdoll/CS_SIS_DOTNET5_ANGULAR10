@@ -171,6 +171,22 @@
                 class="form-control mr-sm-2" 
                 type="password" 
                 placeholder="Password">
+            <input 
+                *ngIf="this.model.factor === 'Passcode'"
+                name="passcode"
+                [(ngModel)]="model.passcode"
+                style="width: 100px"
+                class="form-control mr-sm-2" 
+                type="password" 
+                placeholder="Passcode">
+                <div class="form-group px-2">
+                    <label style="color:whitesmoke" class="mr-1">2FA:</label>
+                    <select name="printStatus" style="width: 120px" [(ngModel)]="this.model.factor" class="form-control ml-1">
+                        <option *ngFor="let factorStatus of factorStatusList" [value]="factorStatus.value">
+                            {{factorStatus.display}}
+                        </option>
+                    </select>
+                </div>
             <button class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
         </form>
     </div>

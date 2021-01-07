@@ -1,1 +1,124 @@
-<p>ssh works!</p>
+
+
+<!-- {{member.username | uppercase}} -->
+<div class="row" *ngIf="member">
+
+    <div class="col-4">
+        <h1></h1>
+    </div>
+
+    <div class="col-8">
+        <!-- <div class="alert alert-info" *ngIf="editForm.dirty">
+            <strong>Information:</strong> You have made changes.  Any unsubmitted requests will be lost.
+        </div> -->
+    </div>
+    
+    <div class="col-4">
+        <div class="card">
+            <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.knownAs}}"
+                class="card-img-top img-thumbnail">
+            <div class="card-body">
+                <div>
+                    <strong>Location:</strong>
+                    <p>{{member.city || 'Carbondale'}}, {{member.country || 'Illinois'}}</p>
+                </div>
+                <!-- <div *ngIf="member.personalURL"> -->
+                <div *ngIf="this.oldUrl">
+                    <strong>Personal Website:</strong>
+                    <!-- <p>https://www2.cs.siu.edu/~{{member.personalURL || 'None'}}</p> -->
+                    <p>https://www2.cs.siu.edu/~{{this.oldUrl || 'None'}}</p>
+                </div>
+                <div>
+                    <strong>Last Active:</strong>
+                    <p>{{member.lastActive | timeago}}</p>
+                </div>
+                <div>
+                    <strong>Member since:</strong>
+                    <p>{{member.created | date: 'longDate'}}</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <!-- <button [disabled]="!(editForm.dirty)" form="editForm" type="submit"
+                    class="btn btn-success btn-block">Submit Request</button> -->
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div class="col-8">
+
+        
+        <tabset class="member-tabset">
+            <tab heading='SSH Server Access'>
+
+                <p>The School of Computing at Southern Illinois University of Carbondale has the following public ssh hosts that allow for remote access while following our usage agreement terms and conditions.</p>
+                
+                <div>
+                    <div>
+                        <h5>Hostnames:</h5>
+                        <p>
+                            pc00.cs.siu.edu <br>
+                            pc01.cs.siu.edu
+                        </p>
+                    </div>
+                    
+
+                    <div>
+                        <h5>Port:</h5>
+                        <p>22</p>
+                    </div>
+
+                    <div>
+                        <p>
+                            Following our ssh access policy you may use the following credentials:
+                        </p>
+
+                        <div id="container">
+                            <div id="content">
+                              <p>$ ssh {{member.username}}@pc00.cs.siu.edu <br>
+                                $ ssh {{member.username}}@pc01.cs.siu.edu</p>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                </div>
+                
+
+            </tab>
+            <tab heading='SSH Key Generator'>
+                <div>
+                    <p>
+                        Personal website: <br>
+                        <a *ngIf="this.oldUrl" href="https://www2.cs.siu.edu/~{{this.oldUrl}}" target="_blank">https://www2.cs.siu.edu/~{{this.oldUrl}}</a>
+                    </p>
+                    <p>
+                        Current ssh keys for {{member.username}}@www2.cs.siu.edu:
+                    </p>
+                    <h5 class="mt-1">Public SSH Key</h5>
+                    <textarea class="form-control" [(ngModel)]="member.publicKeySSH1" name="publicKeySSH1" rows="3"></textarea>
+
+                    <h5 class="mt-2">Private SSH Key</h5>
+                    <textarea class="form-control" [(ngModel)]="member.privateKeySSH1" name="publicKeySSH1" rows="3"></textarea>
+
+                    <!-- <h5 class="mt-2">Public SSH Key 2</h5>
+                    <textarea class="form-control" [(ngModel)]="member.publicKeySSH2" name="publicKeySSH2" rows="3"></textarea>
+
+                    <h5 class="mt-2">Private SSH Key 2</h5>
+                    <textarea class="form-control" [(ngModel)]="member.privateKeySSH2" name="publicKeySSH2" rows="3"></textarea> -->
+
+                    
+                </div><br>
+                <button type="button" class="btn btn-primary" (click)="generateWebSSHKeys()">Generate new ssh keypair</button>
+                <br>
+                <br>
+                <button type="button" class="btn btn-primary" (click)="updateMemberSshKeys(member)">Update ssh keypair</button>
+                
+            </tab>
+            <tab heading='SSH Access Policy'>
+                <p>You agree to the following...</p>
+            </tab>
+        </tabset>
+    </div>
+</div>

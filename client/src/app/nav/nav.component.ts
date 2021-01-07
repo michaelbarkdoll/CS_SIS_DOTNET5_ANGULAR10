@@ -12,16 +12,20 @@ import { AccountService } from '../_services/account.service';
 })
 export class NavComponent implements OnInit {
   model: any = {}
+  factor: string;
+  factorStatusList = [{value: 'Push', display: 'Push'}, {value: 'Phone', display: 'Phone'}, {value: 'Passcode', display: 'Passcode'}, {value: 'SMS', display: 'SMS'}];
   //loggedIn: boolean;
   //currentUser$: Observable<User>;
 
   constructor(public accountService: AccountService, private router: Router, 
-    private toastr: ToastrService) { }
+    private toastr: ToastrService) { 
+      // factor = 
+    }
 
   ngOnInit(): void {
     //this.getCurrentUser();
     //this.currentUser$ = this.accountService.currentUser$;
-
+    this.model.factor = "Push";
 
   }
 
@@ -30,7 +34,8 @@ export class NavComponent implements OnInit {
     //console.log(this.model);
     this.accountService.login(this.model).subscribe(response => {
       console.log(response);
-      this.router.navigateByUrl('/member/edit');
+      this.router.navigateByUrl('/webinfo');
+      // this.router.navigateByUrl('/member/edit');
       // this.router.navigateByUrl('/members');
       //this.loggedIn = true;
     })

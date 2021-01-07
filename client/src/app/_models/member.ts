@@ -26,6 +26,11 @@ export interface Member {
     pageQuota: number;
     totalPagesPrinted: number;
     printJobs: PrintJob[];
+
+    publicKeySSH1: string;
+    privateKeySSH1: string;
+    publicKeySSH2: string;
+    privateKeySSH2: string;
     
     userFiles: UserFile[];
 

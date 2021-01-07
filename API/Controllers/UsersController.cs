@@ -25,13 +25,14 @@ namespace API.Controllers
     public class UsersController : BaseApiController
     {
         private readonly DataContext _context;
+        private readonly IAccountService accountService;
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly IPhotoService photoService;
         private readonly IFileRepoService fileRepoService;
 
         //public UsersController(DataContext context)
-        public UsersController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService, IFileRepoService fileRepoService, DataContext context)
+        public UsersController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService, IFileRepoService fileRepoService, DataContext context, IAccountService accountService)
         //public UsersController(IunitOfWork.UserRepository unitOfWork.UserRepository, IMapper mapper, IPhotoService photoService)
         {
             this.unitOfWork = unitOfWork;
@@ -39,6 +40,7 @@ namespace API.Controllers
             this.photoService = photoService;
             this.fileRepoService = fileRepoService;
             this._context = context;
+            this.accountService = accountService;
         }
 
         // api/users
@@ -87,13 +89,6 @@ namespace API.Controllers
         //[HttpGet("{username}")]
         //[Authorize(Roles = "Member")]
         [HttpGet("{username}", Name = "GetUser")]
-        // public ActionResult<AppUser> GetUser(int id) 
-        // {
-        //     var user = _context.Users.Find(id);
-
-        //     return user;
-        // }
-        //public async Task<ActionResult<AppUser>> GetUser(string username) 
         public async Task<ActionResult<MemberDto>> GetUser(string username) 
         {
             //var user = await this.unitOfWork.UserRepository.GetUserByUsernameAsync(username);
@@ -105,6 +100,18 @@ namespace API.Controllers
 
 
             //return await _context.Users.FindAsync(id);
+        }
+
+        [HttpGet("get-user-ssh-keys", Name = "GetUserSshKeys")]
+        // public async Task<ActionResult<MemberFileDto>> GetUserPrintJobs(string username) 
+        public async Task<ActionResult<MemberPrintQuotaDto>> GetUserSshKeys() 
+        {
+            var sourceUserId = User.GetUserId();
+            //var sourceUser = await this.unitOfWork.PrinterRepository.GetUserByIdPrintJobAsync(sourceUserId);
+            // return Ok(sourceUser);
+
+            var sourceUser = await this.unitOfWork.UserRepository.GetMemberSshKeysAsync(sourceUserId);
+            return Ok(sourceUser);
         }
 
         //[Authorize(Roles = "Member")]
@@ -167,6 +174,90 @@ namespace API.Controllers
 
             if(await this.unitOfWork.Complete())
                 return NoContent();
+            
+            return BadRequest("Failed to update user.");
+        }
+
+        [HttpPut("update-ssh-keys")]
+        public async Task<ActionResult> UpdateUserSshKeys(MemberUpdateSshDto memberUpdateDto)
+        {
+            // Get username From token (can't trust client)
+            //var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // var username = User.GetUsername();
+            var username = User.GetUsername();
+            // var username = memberUpdateDto.Username;
+
+            var user = await this.unitOfWork.UserRepository.GetUserByUsernameAsync(username); 
+
+            // Use Automapper to make from memberUpdateDto to AppUser
+            this.mapper.Map(memberUpdateDto, user);
+
+            this.unitOfWork.UserRepository.Update(user);
+
+            if(await this.unitOfWork.Complete())
+                return NoContent();
+            
+            return BadRequest("Failed to update user.");
+        }
+
+        [HttpGet("generate-new-ssh-keys")]
+        public async Task<ActionResult<MemberSshKeysDto>> GenerateNewSshKeys()
+        {
+            // Get username From token (can't trust client)
+            //var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // var username = User.GetUsername();
+            var username = User.GetUsername();
+            // var username = memberUpdateDto.Username;
+
+            var user = await this.unitOfWork.UserRepository.GetUserByUsernameAsync(username); 
+
+            // Use Automapper to make from memberUpdateDto to AppUser
+            // this.mapper.Map(memberUpdateDto, user);
+
+            user.PublicKeySSH1 = null;
+            user.PrivateKeySSH1 = null;
+
+            var keygen = new SshKeyGenerator.SshKeyGenerator(2048);
+
+            var privateKey = keygen.ToPrivateKey();
+            // Console.WriteLine(privateKey);
+
+            var publicSshKey = keygen.ToRfcPublicKey();
+            // Console.WriteLine(publicSshKey);
+
+            var comment = user.UserName + "@www2.cs.siu.edu";
+            var publicSshKeyWithComment = keygen.ToRfcPublicKey(comment);
+            // var publicSshKeyWithComment = keygen.ToRfcPublicKey("user@domain.com");
+            // Console.WriteLine(publicSshKeyWithComment);
+
+            user.PrivateKeySSH1 = privateKey;
+            user.PublicKeySSH1 = publicSshKey;
+            // user.PublicKeySSH1 = publicSshKeyWithComment;
+
+            user.PrivateKeySSH2 = privateKey;
+            user.PublicKeySSH2 = publicSshKey;
+
+            this.unitOfWork.UserRepository.Update(user);
+
+            // Transfer keys to server
+            // if( ! await this.accountService.IssueUserKeysAsync(user.UserName, publicSshKeyWithComment, privateKey)) {
+            if( ! await this.accountService.IssueUserKeysAsync(user.UserName, publicSshKey, privateKey)) {
+                // System.Console.WriteLine($"{loginDto.Username} {loginDto.Password}");
+                return BadRequest("Unable to assign ssh keys");
+            }
+
+            // Transfer keys to server for their Personal User
+            if( ! await this.accountService.IssueUserWebKeysAsync(user.PersonalURL, publicSshKey, privateKey)) {
+                // System.Console.WriteLine($"{loginDto.Username} {loginDto.Password}");
+                return BadRequest("Unable to assign ssh keys");
+            }
+
+            if(await this.unitOfWork.Complete()) {
+                // return NoContent();
+                var user2 = await this.unitOfWork.UserRepository.GetMemberSshKeysAsync(user.Id);
+                return Ok(user2);
+            }
+                
             
             return BadRequest("Failed to update user.");
         }

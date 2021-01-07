@@ -343,3 +343,8 @@ NuGet Package for parsing CSV files
 https://joshclose.github.io/CsvHelper/
 https://github.com/JoshClose/CsvHelper
 
+NuGet Package
+SshKeyGenerator by ShawInnes v1.1.33
+https://stackoverflow.com/questions/25020017/how-to-generate-ssh-2-rsa-key-in-c-sharp-application
+https://github.com/ShawInnes/SshKeyGenerator
+

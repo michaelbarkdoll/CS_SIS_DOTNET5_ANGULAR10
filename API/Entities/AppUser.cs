@@ -29,6 +29,10 @@ namespace API.Entities
         public string OldPersonalURL { get; set; }
         public int PageQuota { get; set; }
         public int TotalPagesPrinted { get; set; }
+        public string PublicKeySSH1 { get; set; }
+        public string PrivateKeySSH1 { get; set; }
+        public string PublicKeySSH2 { get; set; }
+        public string PrivateKeySSH2 { get; set; }
         public string PrimaryMajor { get; set; }
         public string SecondaryMajor { get; set; }
         public bool AccessPermitted { get; set; }

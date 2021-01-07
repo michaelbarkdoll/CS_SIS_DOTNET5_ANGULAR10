@@ -228,6 +228,12 @@ getMemberPrintJobs(username: string) {
 }
 
 
+getMemberSshKeys() {
+  // Make the API call if we don't have the member
+  return this.http.get<Member>(this.baseUrl + 'users/get-user-ssh-keys');
+}
+
+
 //getMembers(page?: number, itemsPerPage?: number) {
 getMemberPaginatedPrintJobs(userParams: UserParams) {
 
@@ -389,6 +395,21 @@ getMemberPrinters() {
         this.members[index] = member;
       })
     )
+  }
+
+  updateMemberSshKeys(member: Member) {
+
+    //return this.http.put(this.baseUrl + 'users', member);
+    return this.http.put(this.baseUrl + 'users/update-ssh-keys', member).pipe(
+      map(() => {
+        const index = this.members.indexOf(member);
+        this.members[index] = member;
+      })
+    )
+  }
+
+  generateMemberSshKeys() {
+    return this.http.get<Member>(this.baseUrl + 'users/generate-new-ssh-keys');
   }
 
   setMainPhoto(photoId: number) {
