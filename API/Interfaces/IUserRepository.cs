@@ -20,6 +20,7 @@ namespace API.Interfaces
         Task<MemberSshKeysDto> GetMemberSshKeysAsync(string username);
         Task<AppUser> GetUserByUsernameAsync(string username);
         Task<AppUser> GetUserByUsernamePrintJobAsync(string username);
+        Task<AppUser> GetUserByUsernameUserContainersAsync(string username);
         Task<IEnumerable<PrinterDto>> GetPrintersAsync();
 
         

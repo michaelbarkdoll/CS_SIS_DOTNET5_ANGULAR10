@@ -34,6 +34,7 @@ namespace API.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<UserFile> UserFiles { get; set; }
+        public DbSet<UserContainer> UserContainers { get; set; }
 
         // Give entity configuration
         protected override void OnModelCreating(ModelBuilder builder)

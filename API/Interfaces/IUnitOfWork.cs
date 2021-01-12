@@ -10,6 +10,7 @@ namespace API.Interfaces
         ILikesRespository LikesRespository { get; }
         IAdminRepository AdminRepository { get; }
         ICoursesRepository CoursesRepository { get; }
+        IDockerRepository DockerRepository { get; }
         // Method to save all of changes
         Task<bool> Complete();
         // Used to see if EF has any changes

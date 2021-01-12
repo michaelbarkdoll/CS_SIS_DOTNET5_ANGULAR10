@@ -140,6 +140,13 @@ namespace API.Data
                 .SingleOrDefaultAsync(x => x.UserName == username);
         }
 
+        public async Task<AppUser> GetUserByUsernameUserContainersAsync(string username)
+        {
+            return await context.Users
+                .Include(p => p.UserContainers)
+                .SingleOrDefaultAsync(x => x.UserName == username);
+        }
+
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
             return await context.Users

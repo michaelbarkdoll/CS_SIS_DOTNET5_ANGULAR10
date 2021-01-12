@@ -46,6 +46,7 @@ namespace API.Entities
         public ICollection<PrintJob> PrintJobs { get; set; }
         public ICollection<Photo> Photos { get; set; }
         public ICollection<UserFile> UserFiles { get; set; }
+        public ICollection<UserContainer> UserContainers { get; set; }
 
         // List of users that like currently logged in user
         public ICollection<UserLike> LikedByUsers { get; set; }

@@ -42,6 +42,8 @@ namespace API.Data
         public IAdminRepository AdminRepository => new AdminRepository(context, mapper, signInManager, userManager, sshServer);
         public ICoursesRepository CoursesRepository => new CoursesRepository(context, mapper);
 
+        public IDockerRepository DockerRepository => new DockerRepository(context, mapper);
+
         public async Task<bool> Complete()
         {
             return await this.context.SaveChangesAsync() > 0;

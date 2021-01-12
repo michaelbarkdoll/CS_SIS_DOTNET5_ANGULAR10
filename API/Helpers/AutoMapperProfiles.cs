@@ -52,6 +52,13 @@ namespace API.Helpers
 
             CreateMap<AppUser, MemberSshKeysDto>();
             CreateMap<MemberUpdateSshDto, AppUser>();
+
+            CreateMap<UserContainer, UserContainerDto>();
+            CreateMap<AppUser, MemberContainerDto>();
+
+            CreateMap<UserContainer, UserContainerDto>();
+            CreateMap<UserContainer, MemberContainerDto>();
+            
         }
     }
 }

@@ -189,7 +189,9 @@ namespace API.Controllers
 
             var course = await this.unitOfWork.CoursesRepository.GetCourseAsync(id);
 
-            this.unitOfWork.CoursesRepository.DeleteCourse(course);
+            if(course != null) {
+                this.unitOfWork.CoursesRepository.DeleteCourse(course);
+            }
 
             if (await this.unitOfWork.Complete())
                 return Ok();
