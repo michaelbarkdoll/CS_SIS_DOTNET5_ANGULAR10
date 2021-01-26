@@ -13,6 +13,8 @@ namespace API.Entities
         public int ExternalPort { get; set; }
         
         public string JobOwner { get; set; }
+        public string ContainerHost { get; set; }
+        public string ContainerStatus { get; set; }
         
 
         // Fully define the relationship   

@@ -61,6 +61,10 @@ import { UserAccessManagementComponent } from './admin/user-access-management/us
 import { SemesterManagementComponent } from './admin/semester-management/semester-management.component';
 import { UploadClasslistComponent } from './admin/upload-classlist/upload-classlist.component';
 import { ProcessClasslistComponent } from './admin/process-classlist/process-classlist.component';
+import { DockerContainerViewComponent } from './docker/docker-container-view/docker-container-view.component';
+import { DockerRequestContainerComponent } from './docker/docker-request-container/docker-request-container.component';
+import { DockerAdminViewComponent } from './docker/docker-admin-view/docker-admin-view.component';
+import { DockerContainerStatusDialogComponent } from './docker/docker-container-status-dialog/docker-container-status-dialog.component';
 
 @NgModule({
   declarations: [
@@ -114,7 +118,11 @@ import { ProcessClasslistComponent } from './admin/process-classlist/process-cla
     UserAccessManagementComponent,
     SemesterManagementComponent,
     UploadClasslistComponent,
-    ProcessClasslistComponent
+    ProcessClasslistComponent,
+    DockerContainerViewComponent,
+    DockerRequestContainerComponent,
+    DockerAdminViewComponent,
+    DockerContainerStatusDialogComponent
   ],
   imports: [
     BrowserModule,

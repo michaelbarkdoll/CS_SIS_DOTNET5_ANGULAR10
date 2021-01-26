@@ -5,6 +5,7 @@ namespace API.Helpers
         public string CurrentUserName { get; set; }
         public string Gender { get; set; }
         public string PrintStatus { get; set; }
+        public string JobStatus { get; set; }
         public string SearchUser { get; set; }
         public int SearchUserID { get; set; }
         public string SearchPrinter { get; set; }

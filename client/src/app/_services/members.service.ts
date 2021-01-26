@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { of, pipe } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { ContainerJob } from '../_models/containerjob';
 import { Member } from '../_models/member';
 import { PaginatedResult, Pagination } from '../_models/pagination';
 import { Printers } from '../_models/printer';
@@ -27,6 +28,7 @@ export class MembersService {
   memberCache = new Map();
   printerCache = new Map();
   printerUsersCache = new Map();
+  dockerUsersCache = new Map();
   printersCache = new Map();
   user: User;
   userParams: UserParams;
@@ -311,6 +313,48 @@ getMembersPaginatedPrintJobs(userParams: UserParams) {
   
 }
 
+getMembersPaginatedContainerJobs(userParams: UserParams) {
+
+  // console.log(Object.values(userParams).join('-'));
+
+  // Disabled cache..
+  // var response = this.printerUsersCache.get(Object.values(userParams).join('-'));
+  // if(response) {
+  //   return of(response);
+  // }
+
+  let params = this.getPaginationHeaders(userParams.containerJobPageNumber, userParams.containerJobPageSize);
+
+  // params = params.append('printStatus', userParams.printStatus.toString());
+  params = params.append('containerStatus', userParams.printStatus.toString());
+  params = params.append('searchUser', userParams.searchUser.toString());
+  params = params.append('searchPrinter', userParams.searchPrinter.toString());
+  // params = params.append('minAge', userParams.minAge.toString());
+  // params = params.append('maxAge', userParams.maxAge.toString());
+  // params = params.append('Gender', userParams.gender);
+  // params = params.append('orderBy', userParams.orderBy);
+  
+
+  // Previous get method would get body.  Now that we're passing up the params we'll get the full response back and we need to look into the body to get the body.
+  //return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params)
+  
+  // return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params)
+  //   .pipe(map(response => {
+  //     this.memberCache.set(Object.values(userParams).join('-'), response);
+  //     return response;
+  //   }))
+
+  // return getPaginatedResult<Member[]>(this.baseUrl + 'printer/get-user-paged-printjobs/admin', params, this.http)
+  // return getPaginatedResult<PrintJob[]>(this.baseUrl + 'printer/get-user-paged-printjobs/admin', params, this.http)
+  // return getPaginatedResult<PrintJob[]>(this.baseUrl + 'printer/get-users-paged-printjobs', params, this.http)
+  return getPaginatedResult<ContainerJob[]>(this.baseUrl + 'docker/get-user-paged-containerjobs', params, this.http)
+    .pipe(map(response => {
+      this.dockerUsersCache.set(Object.values(userParams).join('-'), response);
+      return response;
+    }))
+  
+}
+
 getPaginatedPrinters(userParams: UserParams) {
 
   let params = this.getPaginationHeaders(userParams.printerPageNumber, userParams.printerPageSize);
@@ -434,6 +478,26 @@ getMemberPrinters() {
     return getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http);
     //return this.getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params);
     //return this.http.get<Partial<Member[]>>(this.baseUrl + 'likes?predicate=' + predicate); // liked or likedBy
+  }
+
+  setContainerJobRunning(containerJobId: number) {
+    return this.http.put(this.baseUrl + 'docker/run-container-job/' + containerJobId, {});
+  }
+
+  setContainerJobStarting(containerJobId: number) {
+    return this.http.put(this.baseUrl + 'docker/start-container-job/' + containerJobId, {});
+  }
+
+  setContainerJobCreating(containerJobId: number) {
+    return this.http.put(this.baseUrl + 'docker/create-container-job/' + containerJobId, {});
+  }
+
+  setContainerJobStop(containerJobId: number) {
+    return this.http.put(this.baseUrl + 'docker/stop-container-job/' + containerJobId, {});
+  }
+
+  setContainerJobDelete(containerJobId: number) {
+    return this.http.put(this.baseUrl + 'docker/delete-container/' + containerJobId, {});
   }
 
   setPrintJobHeld(printJobId: number) {

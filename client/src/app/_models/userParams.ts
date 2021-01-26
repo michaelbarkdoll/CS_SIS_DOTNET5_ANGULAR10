@@ -3,6 +3,7 @@ import { User } from './user';
 export class UserParams {
     gender: string;
     printStatus: string;
+    jobStatus: string;
     searchUser: string;
     searchPrinter: string;
     minAge = 18;
@@ -13,6 +14,8 @@ export class UserParams {
     printJobPageSize = 10;
     printerPageNumber = 1;
     printerPageSize = 5;
+    containerJobPageNumber = 1;
+    containerJobPageSize = 10;
     accessPageNumber = 1;
     accessPageSize = 10;
     semesterPageNumber = 1;
@@ -29,6 +32,7 @@ export class UserParams {
     constructor(user: User) {
         this.gender = user.gender === 'female' ? 'male' : 'female';
         this.printStatus = 'Held';
+        this.jobStatus = 'All';
         this.searchUser = "";
         this.searchPrinter = "";
         this.searchYear = "All";

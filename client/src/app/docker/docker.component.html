@@ -1,12 +1,32 @@
 <h6><a href="/">School of Computing</a> / Docker Containers</h6>
 
-<div class="card" class="card-img-top img-thumbnail">
+<div class="card" class="card-img-top img-thumbnail" >
 
-    <img src="./assets/OCI-logo.svg" alt="Docker Containers" class="card-img-top img-thumbnail">
-    <h4>Docker Containers</h4>
+    <img src="./assets/OCI-logo.svg" alt="Docker Containers" class="card-img-top ml-4 mt-2" style="width:500px">
+    <!-- <h4>Docker Containers</h4> -->
     <div class="card-body">
-        <p>A future service center for managing the School of Computing Computer Science Degree Programs docker containers will reside here.</p>
+        <p>A service center for managing the School of Computing Computer Science Degree Programs docker containers.</p>
     </div>
+    <tabset class="member-tabset">
+        <tab heading='Container Management'>
+                <div class="container">
+                    <app-docker-container-view></app-docker-container-view>
+                </div>
+        </tab>
+        <tab heading='Request Container'>
+            <div class="container">
+                <!-- <app-printer-job-management></app-printer-job-management> -->
+                <app-docker-request-container></app-docker-request-container>
+            </div>
+        </tab>
+        <tab heading='Admin View' *appHasRole='["Admin"]'>
+        <!-- <tab heading='Printer management' *appHasRole='["Admin", "Moderator"]'> -->
+            <div class="container">
+                <!-- <app-printer-admin-management></app-printer-admin-management> -->
+                <app-docker-admin-view></app-docker-admin-view>
+            </div>
+        </tab>
+    </tabset>
     <div class="card-footer">
         School of Computing - OpenContainerServiceManager v1.0.0
         <!-- <p>School of Computing - OpenContainerServiceManager v1.0.0</p> -->

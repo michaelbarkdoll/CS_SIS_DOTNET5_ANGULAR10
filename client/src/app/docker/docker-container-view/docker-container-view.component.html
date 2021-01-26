@@ -1,0 +1,93 @@
+<div class="text-center mt-3">
+    <h2>Your containers - {{pagination?.totalItems}} found</h2>
+</div>
+
+<div class="container mt-3">
+    <form #form="ngForm" class="form-inline mb-3" (ngSubmit)="loadContainerJobs()" autocomplete="off">
+        <!-- <div class="form-group">
+            <label>Printer Name:</label>
+            <input type="string" class="form-control ml-1" style="width: 100px;" name="searchPrinter" [(ngModel)]="userParams.searchPrinter">
+        </div>
+        <div class="form-group">
+            <label class="ml-1">Job Owner:</label>
+            <input type="string" class="form-control ml-1" style="width: 100px;" name="searchUser" [(ngModel)]="userParams.searchUser">
+        </div> -->
+        <div class="form-group">
+            <label class="ml-1">Jobs Per Page:</label>
+            <input type="number" class="form-control ml-1" style="width: 70px;" name="containerJobPageSize" [(ngModel)]="userParams.containerJobPageSize">
+        </div>
+        <div class="form-group px-2">
+            <label>Show container jobs with status: </label>
+            <select name="containerStatus" style="width: 130px" [(ngModel)]="userParams.jobStatus" class="form-control ml-1">
+                <option *ngFor="let containerStatus of containerStatusList" [value]="containerStatus.value">
+                    {{containerStatus.display}}
+                </option>
+            </select>
+        </div>
+
+        <div class="col mt-1">
+            <button class="btn btn-primary ml-1 float-right" type="submit">Apply Filters</button>
+            <button (click)="resetFilters()" class="btn btn-info ml-1 float-right" type="submit">Reset Filters</button>
+        </div>
+
+    </form>
+</div>
+
+
+
+
+<div *ngIf="containerJobs" class="row">
+    <table class="table">
+        <tr text-align="left">
+            <th style="width: 15%">Id</th>
+            <th style="width: 15%">containerId</th>
+            <th style="width: 15%">image</th>
+            <th style="width: 15%">command</th>
+            <th style="width: 15%">internalPort</th>
+            <th style="width: 15%">externalPort</th>
+            <th style="width: 15%">jobOwner</th>
+            <th style="width: 15%">containerHost</th>
+            <th style="width: 15%">containerStatus</th>
+            <th style="width: 15%">Edit Job</th>
+            
+        </tr>
+        <tr *ngFor="let containerJob of containerJobs">
+            <td>{{ containerJob.id }}</td>
+            <td>{{ containerJob.containerId }}</td>
+            <td>{{ containerJob.image }}</td>
+            <td>{{ containerJob.command }}</td>
+            <td>{{ containerJob.internalPort }}</td>
+            <td>{{ containerJob.externalPort }}</td>
+            <td>{{ containerJob.jobOwner }}</td>
+            <td>{{ containerJob.containerHost }}</td>
+            <td>{{ containerJob.containerStatus }}</td>
+            <td><button type="button" class="btn btn-primary" (click)="openModal(template, containerJob)">Edit Status</button></td>
+        </tr>
+    </table>
+</div>
+
+<div class="d-flex justify-content-center" *ngIf="pagination">
+    <pagination 
+        [boundaryLinks]="true" 
+        [totalItems]="pagination.totalItems"
+        [itemsPerPage]="pagination.itemsPerPage"
+        [(ngModel)]="pagination.currentPage"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;" 
+        nextText="&rsaquo;" 
+        firstText="&laquo;" 
+        lastText="&raquo;"> 
+    </pagination>
+</div>
+
+<ng-template #template>
+    <div class="modal-body text-center">
+      <p>Modify job status to:</p>
+      <!-- <button type="button" class="btn btn-default m-1" (click)="confirm()" >Held</button> -->
+      <button type="button" class="btn btn-primary m-1" (click)="confirm()" >Held</button>
+      <button type="button" class="btn btn-primary m-1" (click)="confirm()" >Completed</button>
+      <button type="button" class="btn btn-primary m-1" (click)="confirm()" >Queued</button>
+      <button type="button" class="btn btn-primary m-1" (click)="confirm()" >Cancelled</button>
+      <button type="button" class="btn btn-primary m-1" (click)="decline()" >Exit</button>
+    </div>
+</ng-template>

@@ -440,3 +440,22 @@ https://angular.io/guide/deployment#production-optimizations
 ```
 ng build --prod
 ```
+
+
+
+
+
+
+
+
+
+
+
+```
+cd client/src/app/docker
+ng g c docker-container-view --skip-tests
+ng g c docker-request-container --skip-tests
+ng g c docker-admin-view --skip-tests
+
+ng g c docker-container-status-dialog --skip-tests
+```

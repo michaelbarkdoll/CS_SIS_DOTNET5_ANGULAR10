@@ -4,6 +4,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -28,6 +29,25 @@ namespace API.Controllers
             var sourceUserId = User.GetUserId();
 
             return await this.unitOfWork.DockerRepository.GetMemberContainersAsync(sourceUserId);
+        }
+
+        [HttpGet("get-user-paged-containerjobs", Name = "GetUserPagedContainerJobs")]
+        public async Task<ActionResult<UserContainerDto>> GetUserPagedContainerJobs([FromQuery]UserParams userParams) {
+
+            // userParams.CurrentUserName = User.GetUsername();    // From Token
+            userParams.SearchUserID = User.GetUserId();
+
+            var containerJobs = await this.unitOfWork.DockerRepository.GetMemberContainerJobsAsync(userParams);
+            Response.AddPaginationHeader(containerJobs.CurrentPage, containerJobs.PageSize, containerJobs.TotalCount, containerJobs.TotalPages);
+            return Ok(containerJobs);
+
+            // var printJobs = await this.unitOfWork.PrinterRepository.GetMembersPrintJobsAsync(userParams);
+            // Response.AddPaginationHeader(printJobs.CurrentPage, printJobs.PageSize, printJobs.TotalCount, printJobs.TotalPages);
+            // return Ok(printJobs);
+
+            // var sourceUserId = User.GetUserId();
+
+            // return await this.unitOfWork.DockerRepository.GetMemberContainersAsync(sourceUserId);
         }
 
         [HttpPost("create-container")]
